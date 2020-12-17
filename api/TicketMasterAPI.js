@@ -13,20 +13,104 @@ const knex = require('knex')(require('./knexfile.js')['development']);
 
 
 /*
+	#Setting login
+	POST /setlogin
+	parameters: username password
+	create cookie with username, dont worry about password
+
 	body: {
 		username: 'Tyler',
 		password: 'TylersPassword'
 	}
 */
+
+var serverCookies = [];
+function validateCookie(req, res, next) {
+	if (!req.cookies) {
+		let {cookies} = req;
+		if ('username' in cookies && 'password' in cookies) {
+			
+			if (serverCookies.includes(cookies.username) && serverCookies.includes(cookies.password)) {
+				next();
+			} else {
+				res.status(403).send({'succeeded': 'false', 'error': 'cookie mismatch on server'});
+			}
+		} else {
+			res.status(403).send({'succeeded': 'false', 'error': 'no cookie'});
+		}
+	}
+	next();
+}
+
 app.post('/setlogin', (req, res) => {
 	const {username, password} = req.body
 	
-	
+	res.cookie('username', username);
+	serverCookies.push(username);
+
+
+	res.cookie('password', password);
+	serverCookies.push(password);
+
+	res.status(200).json({'userID': 1});
 })
 
-app.get()
+/*
+	#get tickets that I can view as worker
+	GET /tickets/worker
+	select id from users where email = cookies.username
+	select group_id from group_members where user_id = ^^^
+
+	filter through the group_member table to get all groups by user id
+	is a part of and then
+	filter the group_categories for those ids and then 
+	filter tickets by those categories and returning just the
+	
+	timestamps, title, id and also query the ticket_updates table for the latest timestamp
+	updated for that specific ticket
+*/
+
+app.get('/tickets/worker', validateCookie, (req, res) => {
+	let {cookies} = req;
+
+	//select id from users where email = cookies.username
+	let userID = knex.raw(`select id from users where email = ${cookies.username}`)
+	//select group_id from group_members where user_id = ^^^
+	let groupID = knex.raw(`select group_id from group_members where user_id = ${userID}`)
+	let categoryID = knex.raw(`select id from group_categories where group_id in ${groupID}`)
+	let ticketInfo = knex.raw(`select id,created_at,title,guid from tickets where category_id in ${categoryID}`)
+	let ticketID = knex.raw(`select id from tickets where category_id in ${categoryID}`)
+	let maxTicketID = knex.raw(`select MAX(updated_at),ticket_id from ticket_updates where ticket_id in ${ticketID} group by ticket_id `)
+
+	/*
+	select id from users where email = cookies.username       user id
+	select group_ids from group_members where user_id = ^^^   [] group ids
+	select id from group_categories where group_id in ^^^      [] category ids
+	select created_at,title,guid from tickets where category_id in ^^^    []ticket info
+	select id from tickets where category_id in categoryID
+	select MAX(updated_at),ticket_id from ticket_updates where ticket_id in ticketID group by ticket_id;   maxTicketID
+	*/
+
+
+})
+
+/*
+	#get specific ticket details
+	GET /tickets/details
+	parameter: id
+	filter through the tickets, ticket_updates, and ticket_assignments tables
+	for that specific tickets details
+*/
 
 app.get()
+
+/*
+	#get tickets that I have submitted
+	GET /tickets/customer
+	filter the tickets table by submitted_by the user who requests and return
+	the timestamp, title, and id and also query the ticket_updates table for
+	the latest timestamp updated for that specific ticket
+*/
 
 app.get()
 
@@ -43,7 +127,9 @@ app.post()
 app.post('/register', (req, res) => {
 	const {email, password, first_name, last_name} = req.body
 	
-	knex('users')
+	knex
+		.select('*')
+		.from('users')
 		.insert({ email: email, password: password, first_name: first_name, last_name: last_name})
 		.then(data => {
 			res.status(200).json(data)
