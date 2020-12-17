@@ -6,17 +6,24 @@ create cookie with username, dont worry about password
 
 #get tickets that I can view as worker
 GET /tickets/worker
-filter through the group_member table to get all groups my user id is a part of and then filter the group_categories for those ids and then filter tickets by those categories
+filter through the group_member table to get all groups my user id is a part of and then filter the group_categories for those ids and then filter tickets by those categories and returning just the timestamps, title, id and also query the ticket_updates table for the latest timestamp updated for that specific ticket
+
+#get specific ticket details
+GET /tickets/details
+parameter: id
+filter through the tickets, ticket_updates, and ticket_assignments tables for that specific tickets details
 
 #get tickets that I have submitted
 GET /tickets/customer
-filter the ticket table by submitted_by the user who requests
+filter the tickets table by submitted_by the user who requests and return the timestamp, title, and id and also query the ticket_updates table for the latest timestamp updated for that specific ticket
 
 #submit a new ticket
 POST /tickets/new
 parameters: user group category title description
 add new ticket with newly generated guid status of new, and auto fill the timestamp
 
-
-
+#updating a ticket
+POST /ticket/update
+parameters: ticket_id  description updated_by
+update the ticket_updates table with the parameters given
 

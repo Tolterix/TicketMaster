@@ -39,13 +39,20 @@ CREATE TABLE tickets(
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     category_id INT NOT NULL,
-    assignee_id INT NOT NULL,
     submitted_by INT NOT NULL,
     created_at TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (assignee_id) REFERENCES users (id),
     FOREIGN KEY (submitted_by) REFERENCES users (id),
     FOREIGN KEY (category_id) REFERENCES group_categories (id)
+);
+
+CREATE TABLE ticket_assignments(
+	id INT NOT NULL AUTO_INCREMENT,
+	ticket_id INT NOT NULL,
+	assignee_id INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (ticket_id) REFERENCES tickets (id),
+	FOREIGN KEY (assignee_id) REFERENCES users (id)
 );
 
 CREATE TABLE ticket_updates(
