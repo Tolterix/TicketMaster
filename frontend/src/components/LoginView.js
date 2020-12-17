@@ -1,10 +1,14 @@
 import React from 'react';
 
 class LoginView extends React.Component {
+    handleSubmit = (event) => {
+        event.preventDefault();
+    }
+
     render() {
         return (
             <div id='login-view'>
-                <form id='login-form'>
+                <form id='login-form' onSubmit={ this.handleSubmit }>
                     <label for='email'>Email:</label>
                     <input
                         type='text'
@@ -12,6 +16,7 @@ class LoginView extends React.Component {
                         name='email'
                         placeholder='email@example.com'
                     />
+
                     <label for='password'>Password:</label>
                     <input
                         type='password'
@@ -19,6 +24,8 @@ class LoginView extends React.Component {
                         name='password'
                         placeholder='password'
                     />
+
+                    <input id='login' type='submit' value='Login' />
                 </form>
             </div>
         );
