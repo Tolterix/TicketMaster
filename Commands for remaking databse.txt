@@ -1,0 +1,12 @@
+#enter database
+drop database ticketdb;
+create database ticketdb;
+#exit database
+npx knex migrate:latest
+npx knex seed:run --specific=seed_1users.js
+npx knex seed:run --specific=seed_2groups.js
+npx knex seed:run --specific=seed_3group_categories.js
+npx knex seed:run --specific=seed_4group_members.js
+npx knex seed:run --specific=seed_5tickets.js
+npx knex seed:run --specific=seed_6ticket_assignments.js
+npx knex seed:run --specific=seed_7ticket_updates.js

@@ -42,7 +42,7 @@ function validateCookie(req, res, next) {
 	next();
 }
 
-app.post('/setlogin', (req, res) => {
+app.post('/auth', (req, res) => {
 	const {email, password} = req.body
 
 	res.cookie('email', email);
@@ -71,7 +71,9 @@ app.post('/setlogin', (req, res) => {
 
 app.get('/tickets/worker', validateCookie, (req, res) => {
 	let {cookies} = req;
-
+	
+	//guid should be pseudo random unique sha-1 hash of the current time down to milliseconds, 8 bytes of salt would be good
+	//PBKDF2 for password hash
 	let userID = knex.raw(`select id from users where email = ${cookies.email}`)
 	let groupID = knex.raw(`select group_id from group_members where user_id = ${userID}`)
 	let categoryID = knex.raw(`select id from group_categories where group_id in ${groupID}`)

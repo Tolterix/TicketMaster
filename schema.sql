@@ -32,6 +32,7 @@ CREATE TABLE group_members(
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
+--status codes: 0-new 1-inprogress 2-onhold 3-complete
 CREATE TABLE tickets(
     id INT NOT NULL AUTO_INCREMENT,
     guid VARCHAR(64) NOT NULL,
