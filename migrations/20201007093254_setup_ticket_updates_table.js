@@ -4,7 +4,7 @@ exports.up = function(knex) {
 		table.integer('ticket_id').notNullable();
 		table.string('description').notNullable();
 		table.integer('updated_by').notNullable();
-		table.timestamp('created_at').defaultTo(knex.fn.now());
+		table.timestamp('updated_at').defaultTo(knex.fn.now());
 		
 		table.foreign('ticket_id').references('id').inTable('tickets');
 		table.foreign('updated_by').references('id').inTable('users');

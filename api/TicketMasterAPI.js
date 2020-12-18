@@ -10,20 +10,7 @@ const port = 3001
 app.use(bodyParser.json())
 
 const knex = require('knex')(require('./knexfile.js')['development']);
-
-
 /*
-	#Setting login
-	POST /setlogin
-	parameters: email password
-	create cookie with email, dont worry about password
-
-	body: {
-		email: 'Tyler',
-		password: 'TylersPassword'
-	}
-*/
-
 var serverCookies = [];
 function validateCookie(req, res, next) {
 	if (!req.cookies) {
@@ -45,15 +32,20 @@ function validateCookie(req, res, next) {
 app.post('/auth', (req, res) => {
 	const {email, password} = req.body
 
-	res.cookie('email', email);
-	serverCookies.push(email);
+	//res.cookie('email', email);
+	//serverCookies.push(email);
+	
+	let userID = knex
+		.select('id')
+		.from('users')
+		.where('email', '=', email);
 
-	res.cookie('password', password);
-	serverCookies.push(password);
+	//res.cookie('password', password);
+	//serverCookies.push(password);
 
-	res.status(200).json({ success: true });
+	res.status(200).json({ success: true, userID: userID });
 })
-
+*/
 /*
 	#get tickets that I can view as worker
 	GET /tickets/worker
@@ -68,18 +60,54 @@ app.post('/auth', (req, res) => {
 	timestamps, title, id and also query the ticket_updates table for the latest timestamp
 	updated for that specific ticket
 */
-
-app.get('/tickets/worker', validateCookie, (req, res) => {
-	let {cookies} = req;
+//http://localhost:3000/tickets?userID=1
+app.get('/tickets', /*validateCookie,*/ (req, res) => {
+	let {userID, status} = req.query
+	//let {cookies} = req;
+	let filters = 'TRUE';
+	if (status !== undefined) {
+		switch(status) {
+			case 0:  {}
+			case 1:  {}
+			case 2:  {}
+			default: {break;} 
+		}
+	}
+	
+	
+	//filter on userID, assigned_to, 
 	
 	//guid should be pseudo random unique sha-1 hash of the current time down to milliseconds, 8 bytes of salt would be good
-	//PBKDF2 for password hash
-	let userID = knex.raw(`select id from users where email = ${cookies.email}`)
-	let groupID = knex.raw(`select group_id from group_members where user_id = ${userID}`)
-	let categoryID = knex.raw(`select id from group_categories where group_id in ${groupID}`)
-	let ticketInfo = knex.raw(`select id,created_at,title,guid from tickets where category_id in ${categoryID}`)
-	let ticketID = knex.raw(`select id from tickets where category_id in ${categoryID}`)
-	let maxTicketID = knex.raw(`select ticket_id,MAX(updated_at) from ticket_updates where ticket_id in ${ticketID} group by ticket_id `)
+	
+	//let userID = knex.raw(`select id from users where email = ${cookies.email}`)
+	knex
+		.select('group_id')
+		.from('group_members')
+		.where('user_id', '=', userID)
+		.then(i => {
+			groups = i.map(j => j.group_id);
+			return knex
+				.select('id')
+				.from('group_categories')
+				.where('group_id', 'in', groups)
+		}).then(i => {
+			categories = i.map(j => j.id)
+			return knex
+				.select('tickets.id', 'tickets.status', 'tickets.title',
+					'tickets.description', 'tickets.category_id',
+					'tickets.submitted_by', 'tickets.created_at',
+					'ticket_updates.updated_at')
+				.from('tickets')
+				.join('ticket_updates', 'tickets.id', 'ticket_updates.ticket_id')
+				.where('category_id', 'in', categories)
+				.whereRaw(filters)
+		}).then(i => {
+			res.send({tickets: i});
+		})
+	
+	//let ticketInfo = knex.raw(`select id,created_at,title,guid from tickets where category_id in ${categoryID}`)
+	//let ticketID = knex.raw(`select id from tickets where category_id in ${categoryID}`)
+	//let maxTicketID = knex.raw(`select ticket_id,MAX(updated_at) from ticket_updates where ticket_id in ${ticketID} group by ticket_id `)
 
 	//[{created_at, updated_at, title, guid}]
 
@@ -92,9 +120,11 @@ app.get('/tickets/worker', validateCookie, (req, res) => {
 	filter through the tickets, ticket_updates, and ticket_assignments tables
 	for that specific tickets details
 */
-
-app.get()
-
+/*
+app.get('tickets/details', validateCookie, (req, res) => {
+	//request.params using ??
+})
+*/
 /*
 	#get tickets that I have submitted
 	GET /tickets/customer
@@ -103,17 +133,52 @@ app.get()
 	the latest timestamp updated for that specific ticket
 */
 
-app.get()
+//app.get()
 
-app.post()
+/*
+	#submit a new ticket
+	POST /tickets/new
+	BODY parameters: user group category title description
+	add new ticket with newly generated guid status of new, and auto fill the timestamp
+*/
 
-app.post()
+//app.post()
+
+/*
+	#updating a ticket
+	POST /ticket/update
+	BODY parameters: ticket_id  description updated_by
+	update the ticket_updates table with the parameters given
+*/
+
+//app.post()
+
+
+
+app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 app.post('/register', (req, res) => {
 	const {email, password, first_name, last_name} = req.body
@@ -205,9 +270,7 @@ app.post('/send',function(req,res){
 });
 
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
-
-
+*/
 
 
 
