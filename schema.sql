@@ -1,3 +1,13 @@
+CREATE TABLE users(
+    id INT NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL,
+    password TEXT NOT NULL,
+    first_name VARCHAR(32) NOT NULL,
+    last_name VARCHAR(32) NOT NULL,
+    created_at TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE groups(
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -11,16 +21,6 @@ CREATE TABLE group_categories(
     name VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (group_id) REFERENCES groups (id)
-);
-
-CREATE TABLE users(
-    id INT NOT NULL AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL,
-    password TEXT NOT NULL,
-    first_name VARCHAR(32) NOT NULL,
-    last_name VARCHAR(32) NOT NULL,
-    created_at TIMESTAMP,
-    PRIMARY KEY (id)
 );
 
 CREATE TABLE group_members(
@@ -42,8 +42,8 @@ CREATE TABLE tickets(
     submitted_by INT NOT NULL,
     created_at TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (submitted_by) REFERENCES users (id),
-    FOREIGN KEY (category_id) REFERENCES group_categories (id)
+	FOREIGN KEY (category_id) REFERENCES group_categories (id),
+    FOREIGN KEY (submitted_by) REFERENCES users (id)
 );
 
 CREATE TABLE ticket_assignments(

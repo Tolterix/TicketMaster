@@ -15,11 +15,11 @@ const knex = require('knex')(require('./knexfile.js')['development']);
 /*
 	#Setting login
 	POST /setlogin
-	parameters: username password
-	create cookie with username, dont worry about password
+	parameters: email password
+	create cookie with email, dont worry about password
 
 	body: {
-		username: 'Tyler',
+		email: 'Tyler',
 		password: 'TylersPassword'
 	}
 */
@@ -28,9 +28,9 @@ var serverCookies = [];
 function validateCookie(req, res, next) {
 	if (!req.cookies) {
 		let {cookies} = req;
-		if ('username' in cookies && 'password' in cookies) {
+		if ('email' in cookies && 'password' in cookies) {
 			
-			if (serverCookies.includes(cookies.username) && serverCookies.includes(cookies.password)) {
+			if (serverCookies.includes(cookies.email) && serverCookies.includes(cookies.password)) {
 				next();
 			} else {
 				res.status(403).send({'succeeded': 'false', 'error': 'cookie mismatch on server'});
@@ -43,22 +43,21 @@ function validateCookie(req, res, next) {
 }
 
 app.post('/setlogin', (req, res) => {
-	const {username, password} = req.body
-	
-	res.cookie('username', username);
-	serverCookies.push(username);
+	const {email, password} = req.body
 
+	res.cookie('email', email);
+	serverCookies.push(email);
 
 	res.cookie('password', password);
 	serverCookies.push(password);
 
-	res.status(200).json({'userID': 1});
+	res.status(200).json({ success: true });
 })
 
 /*
 	#get tickets that I can view as worker
 	GET /tickets/worker
-	select id from users where email = cookies.username
+	select id from users where email = cookies.email
 	select group_id from group_members where user_id = ^^^
 
 	filter through the group_member table to get all groups by user id
@@ -73,24 +72,14 @@ app.post('/setlogin', (req, res) => {
 app.get('/tickets/worker', validateCookie, (req, res) => {
 	let {cookies} = req;
 
-	//select id from users where email = cookies.username
-	let userID = knex.raw(`select id from users where email = ${cookies.username}`)
-	//select group_id from group_members where user_id = ^^^
+	let userID = knex.raw(`select id from users where email = ${cookies.email}`)
 	let groupID = knex.raw(`select group_id from group_members where user_id = ${userID}`)
 	let categoryID = knex.raw(`select id from group_categories where group_id in ${groupID}`)
 	let ticketInfo = knex.raw(`select id,created_at,title,guid from tickets where category_id in ${categoryID}`)
 	let ticketID = knex.raw(`select id from tickets where category_id in ${categoryID}`)
-	let maxTicketID = knex.raw(`select MAX(updated_at),ticket_id from ticket_updates where ticket_id in ${ticketID} group by ticket_id `)
+	let maxTicketID = knex.raw(`select ticket_id,MAX(updated_at) from ticket_updates where ticket_id in ${ticketID} group by ticket_id `)
 
-	/*
-	select id from users where email = cookies.username       user id
-	select group_ids from group_members where user_id = ^^^   [] group ids
-	select id from group_categories where group_id in ^^^      [] category ids
-	select created_at,title,guid from tickets where category_id in ^^^    []ticket info
-	select id from tickets where category_id in categoryID
-	select MAX(updated_at),ticket_id from ticket_updates where ticket_id in ticketID group by ticket_id;   maxTicketID
-	*/
-
+	//[{created_at, updated_at, title, guid}]
 
 })
 
