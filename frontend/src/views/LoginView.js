@@ -1,14 +1,14 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { StateContext } from '../App.js';
+import { StateContext } from '../State';
 
-function LoginView() {
+const LoginView = () => {
     const context = React.useContext(StateContext);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
 
-        var response = await fetch("http://localhost:8080/auth", {
+        fetch("http://localhost:8080/auth", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -18,24 +18,22 @@ function LoginView() {
                 email: event.target.email.value,
                 password: event.target.password.value
             })
+        }).then(response => {
+            if (response.status === 200
+                && response.json().success) {
+                context.setState({ user: { ...context.user, id: 0 } });
+            }
         });
-
-        if (response.status === 200
-            && response.json().success) {
-            context.setState('isAuthenticated', true);
-        }
-
-        context.setState('isAuthenticated', true);
     }
 
-    if (context.isAuthenticated) {
+    if (context.user.id !== undefined) {
         return (
-            <Redirect to='/tickets' />
+            <Redirect to='/' />
         );
     }
 
     return (
-        <div id='login-view'>
+        <div className='login-view'>
             <form id='login-form' onSubmit={ handleSubmit }>
                 <div>
                     <label htmlFor='email'>Email:</label>
@@ -55,7 +53,7 @@ function LoginView() {
                     />
                 </div>
 
-                <input id='login' type='submit' value='Login' />
+                <button id='login' type='submit'>Login</button>
             </form>
         </div>
     );

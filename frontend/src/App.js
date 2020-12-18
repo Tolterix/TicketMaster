@@ -5,65 +5,71 @@ import {
     Route,
     Redirect
 } from 'react-router-dom';
+import { StateContext } from './State';
 
-import LoginView from './components/LoginView';
-
-const StateContext = React.createContext({});
-const StateProvider = (props) => {
-    const initialState = {
-        isAuthenticated: false,
-        email: "",
-        setState: (property, value) => {
-            updateState((state) => ({ ...state, [property]: value }));
-        }
-    }
-
-    const [ state, updateState ] = React.useState(initialState);
-
-    return (
-        <StateContext.Provider value={ state }>
-            { props.children }
-        </StateContext.Provider>
-    );
-}
+import LoginView from './views/LoginView';
+import TicketsView from './views/TicketsView';
+import SubmitView from './views/SubmitView';
+import ProfileView from './views/ProfileView';
+import WorkcenterView from './views/WorkcenterView';
 
 const App = () => {
     const context = React.useContext(StateContext);
 
+    console.log(context);
     return (
-        <StateProvider>
-            <Router>
-                <Switch>
-                    <Route exact path='/'>
-                        {
-                            context.isAuthenticated
-                            ? <Redirect to='/tickets' />
-                            : <Redirect to='/login' />
-                        }
-                    </Route>
+        <Router>
+            <Switch>
+                <Route exact path='/'>
+                    {
+                        context.user.id !== undefined
+                        ? <Redirect to='/tickets' />
+                        : <Redirect to='/login' />
+                    }
+                </Route>
 
-                    <Route path='/login'>
-                        {
-                            context.isAuthenticated
-                            ? <Redirect to='/tickets' />
-                            : <LoginView />
-                        }
-                    </Route>
+                <Route path='/login'>
+                    {
+                        context.user.id !== undefined
+                        ? <Redirect to='/tickets' />
+                        : <LoginView />
+                    }
+                </Route>
 
-                    <Route path='/tickets'>
-                        
-                    </Route>
+                <Route path='/tickets'>
+                    {
+                        context.user.id !== undefined
+                        ? <TicketsView />
+                        : <Redirect to='/login' />
+                    }
+                </Route>
 
-                    <Route path='/tickets/submit'>
-                    </Route>
+                <Route path='/tickets/submit'>
+                    {
+                        context.user.id !== undefined
+                        ? <SubmitView />
+                        : <Redirect to='/login' />
+                    }
+                </Route>
 
-                    <Route path='/workcenter'>
-                    </Route>
-                </Switch>
-            </Router>
-        </StateProvider>
+                <Route path='/profile'>
+                    {
+                        context.user.id !== undefined
+                        ? <ProfileView />
+                        : <Redirect to='/login' />
+                    }
+                </Route>
+
+                <Route path='/workcenter'>
+                    {
+                        context.user.id !== undefined
+                        ? <WorkcenterView />
+                        : <Redirect to='/login' />
+                    }
+                </Route>
+            </Switch>
+        </Router>
     );
 }
 
 export default App;
-export { StateContext };
