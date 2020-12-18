@@ -11,21 +11,21 @@ describe('<LoginView />', () => {
 
     describe('#handleSubmit()', () => {
         it('should exist', () => {
-            expect(wrapper.instance().handleSubmit).not.toEqual(undefined);
+            expect(wrapper.handleSubmit).not.toEqual(undefined);
         });
 
         it('should be a function', () => {
-            expect(typeof(wrapper.instance().handleSubmit)).toEqual('function');
+            expect(typeof(wrapper.handleSubmit)).toEqual('function');
         });
 
         it('should require one argument', () => {
-            expect(() => wrapper.instance().handleSubmit()).toThrow(Error);
+            expect(() => wrapper.handleSubmit()).toThrow(Error);
         });
 
         it('should call event.preventDefault()', () => {
             const event = { preventDefault: jest.fn() };
 
-            wrapper.instance().handleSubmit(event);
+            wrapper.handleSubmit(event);
 
             expect(event.preventDefault).toHaveBeenCalled();
         });
@@ -33,13 +33,13 @@ describe('<LoginView />', () => {
 
     describe('#login-form', () => {
         it('clicking login calls handleSubmit()', () => {
-            wrapper.instance().handleSubmit = jest.fn();
-            wrapper.instance().forceUpdate();
+            wrapper.handleSubmit = jest.fn();
+            wrapper.forceUpdate();
 
             const form = wrapper.find('#login-form');
             form.simulate('submit');
 
-            expect(wrapper.instance().handleSubmit).toHaveBeenCalled();
+            expect(wrapper.handleSubmit).toHaveBeenCalled();
         });
     });
 });

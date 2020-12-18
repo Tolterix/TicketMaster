@@ -1,35 +1,64 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { StateContext } from '../App.js';
 
-class LoginView extends React.Component {
-    handleSubmit = (event) => {
+function LoginView() {
+    const context = React.useContext(StateContext);
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
+
+        var response = await fetch("http://localhost:8080/auth", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: event.target.email.value,
+                password: event.target.password.value
+            })
+        });
+
+        if (response.status === 200
+            && response.json().success) {
+            context.setState('isAuthenticated', true);
+        }
+
+        context.setState('isAuthenticated', true);
     }
 
-    render() {
+    if (context.isAuthenticated) {
         return (
-            <div id='login-view'>
-                <form id='login-form' onSubmit={ this.handleSubmit }>
-                    <label for='email'>Email:</label>
+            <Redirect to='/tickets' />
+        );
+    }
+
+    return (
+        <div id='login-view'>
+            <form id='login-form' onSubmit={ handleSubmit }>
+                <div>
+                    <label htmlFor='email'>Email:</label>
                     <input
                         type='text'
                         id='email'
                         name='email'
-                        placeholder='email@example.com'
                     />
+                </div>
 
-                    <label for='password'>Password:</label>
+                <div>
+                    <label htmlFor='password'>Password:</label>
                     <input
                         type='password'
                         id='password'
                         name='password'
-                        placeholder='password'
                     />
+                </div>
 
-                    <input id='login' type='submit' value='Login' />
-                </form>
-            </div>
-        );
-    }
+                <input id='login' type='submit' value='Login' />
+            </form>
+        </div>
+    );
 }
 
 export default LoginView;
