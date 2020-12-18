@@ -5,7 +5,8 @@ exports.seed = function(knex) {
     .then(function () {
       // Inserts seed entries
       return knex('ticket_assignments').insert([
-        {id: 1, colName: 'rowValue1'},
+        {id: 1, ticket_id: 2, assignee_id: 4},
+		{id: 2, ticket_id: 3, assignee_id: 2}
       ]);
     });
 };
