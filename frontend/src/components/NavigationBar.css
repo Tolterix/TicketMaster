@@ -1,0 +1,63 @@
+.navbar-grid {
+    /* background-color: rgba(239, 242, 245, 0.988);
+    height: 80px;
+    display: flex;
+    justify-content: start;
+    align-items: center; */
+    border:4px black solid;
+    display: grid;
+    width: 200px;
+    height: 1400px;
+    grid-template-rows: 20%,10%,10%,30%,10%,10%,10% 
+}
+/* .box-a {
+    background-color: chartreuse;
+    border-radius: 20px;
+    border:4px black solid;
+    margin-top: 0px;
+} */
+/* 
+.menu-bars {
+    margin-left: 0.5rem;
+    font-size: 1.5rem;
+    background: none;
+    color: black;
+} */
+.airforce-logo {
+    margin-top: 0px;
+    margin-left: -2rem;
+    padding:px 0px 10px 0px;
+  
+}
+.nav-menu-items {
+    list-style-type: none;
+    font-size: 3rem;
+}
+.nav-menu {
+    background-color: rgba(0, 132, 255, 0.988);
+    width: 200px;
+    height: 1400px;
+    border:2px black;
+    display: grid;
+    grid-template-columns: 200px;
+    grid-template-rows: 20% 20% 100px;
+    /* display: flex; */
+    /* justify-content: left;
+    position: fixed; */
+    top: 0;
+    left: -100;
+
+}
+
+.nav-text a {
+    text-decoration: none;
+    color: ghostwhite;
+    font-size: 24px;
+    list-style-type: none;
+    width: 95%;
+    height:180px;
+    display: flex;
+    align-items: left;
+    padding: 30px 0px 20px 0px;
+    border-radius: 4px;
+}
