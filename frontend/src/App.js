@@ -36,7 +36,7 @@ const App = () => {
                     }
                 </Route>
 
-                <Route path='/tickets'>
+                <Route exact path='/tickets'>
                     {
                         context.user.id !== undefined
                         ? <TicketsView />
@@ -44,7 +44,7 @@ const App = () => {
                     }
                 </Route>
 
-                <Route path='/tickets/submit'>
+                <Route exact path='/tickets/submit'>
                     {
                         context.user.id !== undefined
                         ? <SubmitView />
