@@ -12,7 +12,7 @@ function NavigationBar() {
                         <li className='airforce-logo'> 
                             <a href='/'>
                                 <img src = {AirForceLogo}
-                                alt='Air Force Logo'/>;
+                                alt='Air Force Logo'/>
                             </a>
                         </li>
                     </div>

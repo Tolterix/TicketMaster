@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ProfileView from './ProfileView';
+import  from '';
 
-describe('Profile View', () => {
+describe('', () => {
     var wrapper;
     beforeEach(() => {
         wrapper = shallow();

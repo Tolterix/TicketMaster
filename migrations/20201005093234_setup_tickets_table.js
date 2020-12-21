@@ -1,12 +1,12 @@
 exports.up = function(knex) {
     return knex.schema.createTable('tickets', table => {
         table.increments('id').notNullable();
-		table.integer('guid').notNullable();
 		table.integer('status').notNullable();
 		table.string('title', 255).notNullable();
 		table.string('description').notNullable();
 		table.integer('category_id').notNullable();
 		table.integer('submitted_by').notNullable();
+		table.timestamp('updated_at').defaultTo(knex.fn.now());
 		table.timestamp('created_at').defaultTo(knex.fn.now());
 		
 		table.foreign('category_id').references('id').inTable('group_categories');

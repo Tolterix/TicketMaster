@@ -1,0 +1,28 @@
+html{
+    font-size: 1.75vw;
+}
+
+#ViewContainer{
+    display:               grid;
+    grid-template-columns: 1fr 7fr;
+}
+
+#ProfileContainer{
+    margin-left:    1vw;
+    display:        flex;
+    flex-direction: column;
+}
+
+#GroupLabel{
+    text-align: center;
+}
+
+#GroupsContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 2vw;
+}
+
+#GroupNames{
+    justify-self: center;
+}

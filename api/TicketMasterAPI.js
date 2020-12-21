@@ -62,10 +62,16 @@ app.post('/auth', (req, res) => {
 */
 //http://localhost:3000/tickets?userID=1
 app.get('/tickets', /*validateCookie,*/ (req, res) => {
-	let {userID, status} = req.query
+	let {userID, status, view} = req.query
 	//let {cookies} = req;
 	let filters = 'TRUE';
+	function wipeFilter() {
+		if (filters === 'TRUE') {
+			filters = '';
+		}
+	}
 	if (status !== undefined) {
+		wipeFilter();
 		switch(status) {
 			case 0:  {}
 			case 1:  {}
@@ -74,16 +80,12 @@ app.get('/tickets', /*validateCookie,*/ (req, res) => {
 		}
 	}
 	
-	
-	//filter on userID, assigned_to, 
-	
-	//guid should be pseudo random unique sha-1 hash of the current time down to milliseconds, 8 bytes of salt would be good
-	
-	//let userID = knex.raw(`select id from users where email = ${cookies.email}`)
-	knex
-		.select('group_id')
-		.from('group_members')
-		.where('user_id', '=', userID)
+	console.log(filters)
+	if (view == 1) {
+		knex
+			.select('group_id')
+			.from('group_members')
+			.where('user_id', '=', userID)
 		.then(i => {
 			groups = i.map(j => j.group_id);
 			return knex
@@ -96,21 +98,28 @@ app.get('/tickets', /*validateCookie,*/ (req, res) => {
 				.select('tickets.id', 'tickets.status', 'tickets.title',
 					'tickets.description', 'tickets.category_id',
 					'tickets.submitted_by', 'tickets.created_at',
-					'ticket_updates.updated_at')
+					'tickets.updated_at')
 				.from('tickets')
-				.join('ticket_updates', 'tickets.id', 'ticket_updates.ticket_id')
-				.where('category_id', 'in', categories)
-				.whereRaw(filters)
+				.whereRaw(filters + ` and category_id in (${categories})`)
 		}).then(i => {
 			res.send({tickets: i});
 		})
+	} else {
+		knex
+			.select('tickets.id', 'tickets.status', 'tickets.title',
+				'tickets.description', 'tickets.category_id',
+				'tickets.submitted_by', 'tickets.created_at',
+				'tickets.updated_at')
+			.from('tickets')
+			.whereRaw(filters + ` and tickets.submitted_by = ${userID}`)
+		.then(i => {
+			res.send({tickets: i});
+		})
+	}
+})
+
+app.get('/userProfile', /*validateCookie,*/ (req, res) => {
 	
-	//let ticketInfo = knex.raw(`select id,created_at,title,guid from tickets where category_id in ${categoryID}`)
-	//let ticketID = knex.raw(`select id from tickets where category_id in ${categoryID}`)
-	//let maxTicketID = knex.raw(`select ticket_id,MAX(updated_at) from ticket_updates where ticket_id in ${ticketID} group by ticket_id `)
-
-	//[{created_at, updated_at, title, guid}]
-
 })
 
 /*
@@ -120,26 +129,18 @@ app.get('/tickets', /*validateCookie,*/ (req, res) => {
 	filter through the tickets, ticket_updates, and ticket_assignments tables
 	for that specific tickets details
 */
-/*
-app.get('tickets/details', validateCookie, (req, res) => {
+
+
+app.get('tickets/details', /*validateCookie,*/ (req, res) => {
 	//request.params using ??
 })
-*/
-/*
-	#get tickets that I have submitted
-	GET /tickets/customer
-	filter the tickets table by submitted_by the user who requests and return
-	the timestamp, title, and id and also query the ticket_updates table for
-	the latest timestamp updated for that specific ticket
-*/
-
-//app.get()
 
 /*
 	#submit a new ticket
 	POST /tickets/new
 	BODY parameters: user group category title description
 	add new ticket with newly generated guid status of new, and auto fill the timestamp
+	when updating tickets in the ticket_update table, make sure to update the updated_at in the tickets table
 */
 
 //app.post()

@@ -35,7 +35,6 @@ CREATE TABLE group_members(
 --status codes: 0-new 1-inprogress 2-onhold 3-complete
 CREATE TABLE tickets(
     id INT NOT NULL AUTO_INCREMENT,
-    guid VARCHAR(64) NOT NULL,
     status INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,

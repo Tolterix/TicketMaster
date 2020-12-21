@@ -9,7 +9,7 @@ module.exports = {
       database: 'ticketdb',
       user: 'postgres',
       password: 'testPass',
-      port: '4000'
+      port: '4000' //standard 5432
     }
   },
 

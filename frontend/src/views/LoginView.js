@@ -8,7 +8,7 @@ const LoginView = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch("http://localhost:8080/auth", {
+        fetch("http://localhost:3001/auth", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -21,7 +21,17 @@ const LoginView = () => {
         }).then(response => {
             if (response.status === 200
                 && response.json().success) {
-                context.setState({ user: { ...context.user, id: 0 } });
+                fetch("http://localhost:3001/userProfile", {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    }
+                }).then(
+                    response => {
+                        context.setState({user: response.json()});
+                    }
+                )
             }
         });
     }
