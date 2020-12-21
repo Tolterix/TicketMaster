@@ -40,6 +40,7 @@ CREATE TABLE tickets(
     description TEXT NOT NULL,
     category_id INT NOT NULL,
     submitted_by INT NOT NULL,
+	updated_at TIMESTAMP,
     created_at TIMESTAMP,
     PRIMARY KEY (id),
 	FOREIGN KEY (category_id) REFERENCES group_categories (id),

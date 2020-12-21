@@ -22,7 +22,7 @@ const App = () => {
             <Switch>
                 <Route exact path='/'>
                     {
-                        context.user.id !== undefined
+                        context.user.id !== 0
                         ? <Redirect to='/tickets' />
                         : <Redirect to='/login' />
                     }
@@ -30,15 +30,15 @@ const App = () => {
 
                 <Route path='/login'>
                     {
-                        context.user.id !== undefined
-                        ? <Redirect to='/tickets' />
+                        context.user.id !== 0
+                        ? <Redirect to='/profile' />
                         : <LoginView />
                     }
                 </Route>
 
                 <Route path='/tickets'>
                     {
-                        context.user.id !== undefined
+                        context.user.id !== 0
                         ? <TicketsView />
                         : <Redirect to='/login' />
                     }
@@ -46,7 +46,7 @@ const App = () => {
 
                 <Route path='/tickets/submit'>
                     {
-                        context.user.id !== undefined
+                        context.user.id !== 0
                         ? <SubmitView />
                         : <Redirect to='/login' />
                     }
@@ -54,7 +54,7 @@ const App = () => {
 
                 <Route path='/profile'>
                     {
-                        context.user.id !== undefined
+                        context.user.id !== 0
                         ? <ProfileView />
                         : <Redirect to='/login' />
                     }
@@ -62,7 +62,7 @@ const App = () => {
 
                 <Route path='/workcenter'>
                     {
-                        context.user.id !== undefined
+                        context.user.id !== 0
                         ? <WorkcenterView />
                         : <Redirect to='/login' />
                     }

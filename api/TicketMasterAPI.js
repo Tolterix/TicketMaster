@@ -1,13 +1,14 @@
 
 const fs = require("fs")
 const bodyParser = require("body-parser")
-
+const cors = require('cors');
 const express = require('express')
 const app = express()
-const port = 3001
+const port = 8080
 
 
 app.use(bodyParser.json())
+app.use(cors());
 
 const knex = require('knex')(require('./knexfile.js')['development']);
 /*
@@ -28,24 +29,109 @@ function validateCookie(req, res, next) {
 	}
 	next();
 }
+*/
 
 app.post('/auth', (req, res) => {
 	const {email, password} = req.body
 
 	//res.cookie('email', email);
 	//serverCookies.push(email);
+	let userObj = {
+		id: 0,
+		groups: [
+			/*{
+				id: 1,
+				name:'group1',
+				categories: [{id: 1, name:''}],
+				parents: [],
+				children: ['group2']
+			}*/
+		],
+		firstName: '',
+		lastName: '',
+		email: ''
+	}
 	
-	let userID = knex
-		.select('id')
+	knex
+		.select('id', 'email', 'first_name', 'last_name')
 		.from('users')
-		.where('email', '=', email);
+		.where('email', '=', email)
+	.then(userInfo => {
+		userObj.id = userInfo[0].id
+		userObj.email = userInfo[0].email
+		userObj.firstName = userInfo[0].first_name
+		userObj.lastName = userInfo[0].last_name
+	})
+	.then(() => {
+		knex
+			.select('group_id')
+			.from('group_members')
+			.where('user_id', '=', userObj.id)
+		.then(arrayOfGroups => {
+			arrayOfGroups.forEach(groupID => {
+				console.log(groupID)
+				userObj.groups.push({id: groupID.group_id, name: '', categories: [], parents: [], children: []})
+			})
+		})
+		.then(() => {
+			console.log(JSON.stringify(userObj))
+			userObj.groups.forEach(group => {
+				knex
+					.select('name')
+					.from('groups')
+					.where('id', '=', group.id)
+				.then(gName => {
+					userObj.groups = userObj.groups.map(groupO => {
+						console.log(groupO)
+						if (groupO.id == group.id) {
+							groupO.name = gName[0].name
+							return groupO
+						} else {
+							return groupO
+						}
+					})
+				})
+			})
+			.then(() => {
+				console.log(JSON.stringify(userObj))
+				res.status(200).send(JSON.stringify(userObj));
+			})
+		})
+	})
+
+	/*
+			knex
+				.select('name', 'parent_id')
+				.from('groups')
+				.where('id', '=', groupObj.id)
+			.then(groupInfo => {
+				groupObj.name = groupInfo.name
+				knex
+					.select('name')
+					.from('groups')
+					.where('id', '=', groupObj.parent_id)
+					.then(parentName => {
+						groupObj.parentName = parentName
+					})
+			})
+		})
+
+		[
+			{
+				id: 1,
+				name:'group1',
+				categories: [{id: 1, name:'cat_name'}],
+				parents: [],
+				children: ['group2']
+			}
+		],
+		*/
+	//load group categories into state
 
 	//res.cookie('password', password);
 	//serverCookies.push(password);
-
-	res.status(200).json({ success: true, userID: userID });
 })
-*/
+
 /*
 	#get tickets that I can view as worker
 	GET /tickets/worker

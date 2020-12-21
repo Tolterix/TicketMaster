@@ -8,7 +8,7 @@ const LoginView = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        fetch("http://localhost:3001/auth", {
+        fetch("http://localhost:8080/auth", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -19,24 +19,15 @@ const LoginView = () => {
                 password: event.target.password.value
             })
         }).then(response => {
-            if (response.status === 200
-                && response.json().success) {
-                fetch("http://localhost:3001/userProfile", {
-                    method: "GET",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    }
-                }).then(
-                    response => {
-                        context.setState({user: response.json()});
-                    }
-                )
+            if (response.status === 200) {
+                response.json().then(i => {
+                    context.setState({user: i})
+                })
             }
-        });
+        })
     }
 
-    if (context.user.id !== undefined) {
+    if (context.user.id !== 0) {
         return (
             <Redirect to='/' />
         );

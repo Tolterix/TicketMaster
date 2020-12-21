@@ -10,3 +10,8 @@ npx knex seed:run --specific=seed_4group_members.js
 npx knex seed:run --specific=seed_5tickets.js
 npx knex seed:run --specific=seed_6ticket_assignments.js
 npx knex seed:run --specific=seed_7ticket_updates.js
+
+
+
+--or if you have the database already made:
+
