@@ -4,8 +4,6 @@ import AirForceLogo from '../AirForceLogo.png';
 
 
 function NavigationBar() {
-    // const [sidebar, setSidebar] = useState(false)
-    // const showSidebar = () => setSidebar(!sidebar)
     return (
         <div className='navbar-grid'> 
             <nav className='nav-menu'>
