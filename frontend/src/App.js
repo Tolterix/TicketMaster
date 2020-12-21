@@ -39,10 +39,6 @@ const App = () => {
 
                 <Route exact path='/tickets'>
                     {
-<<<<<<< HEAD
-                        context.user.id !== 0
-                        ? <TicketsView />
-=======
                         context.user.id !== undefined
                         ? (
                             <div className='container'>
@@ -50,17 +46,12 @@ const App = () => {
                                 <TicketsView />
                             </div>
                         )
->>>>>>> aeaa0fafa6be5c31521590bb55ceb3be45aff7c9
                         : <Redirect to='/login' />
                     }
                 </Route>
 
                 <Route exact path='/tickets/submit'>
                     {
-<<<<<<< HEAD
-                        context.user.id !== 0
-                        ? <SubmitView />
-=======
                         context.user.id !== undefined
                         ? (
                             <div className='container'>
@@ -68,17 +59,12 @@ const App = () => {
                                 <SubmitView />
                             </div>
                         )
->>>>>>> aeaa0fafa6be5c31521590bb55ceb3be45aff7c9
                         : <Redirect to='/login' />
                     }
                 </Route>
 
                 <Route exact path='/profile'>
                     {
-<<<<<<< HEAD
-                        context.user.id !== 0
-                        ? <ProfileView />
-=======
                         context.user.id !== undefined
                         ? (
                             <div className='container'>
@@ -86,17 +72,12 @@ const App = () => {
                                 <ProfileView />
                             </div>
                         )
->>>>>>> aeaa0fafa6be5c31521590bb55ceb3be45aff7c9
                         : <Redirect to='/login' />
                     }
                 </Route>
 
                 <Route exact path='/workcenter'>
                     {
-<<<<<<< HEAD
-                        context.user.id !== 0
-                        ? <WorkcenterView />
-=======
                         context.user.id !== undefined
                         ? (
                             <div className='container'>
@@ -104,7 +85,6 @@ const App = () => {
                                 <WorkcenterView />
                             </div>
                         )
->>>>>>> aeaa0fafa6be5c31521590bb55ceb3be45aff7c9
                         : <Redirect to='/login' />
                     }
                 </Route>

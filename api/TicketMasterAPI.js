@@ -52,6 +52,7 @@ app.post('/auth', (req, res) => {
 		email: ''
 	}
 	
+	//get userid and user info
 	knex
 		.select('id', 'email', 'first_name', 'last_name')
 		.from('users')
@@ -62,6 +63,7 @@ app.post('/auth', (req, res) => {
 		userObj.firstName = userInfo[0].first_name
 		userObj.lastName = userInfo[0].last_name
 	})
+	//get array of group ids and push to groups
 	.then(() => {
 		knex
 			.select('group_id')
@@ -69,32 +71,47 @@ app.post('/auth', (req, res) => {
 			.where('user_id', '=', userObj.id)
 		.then(arrayOfGroups => {
 			arrayOfGroups.forEach(groupID => {
-				console.log(groupID)
-				userObj.groups.push({id: groupID.group_id, name: '', categories: [], parents: [], children: []})
+				userObj.groups.push({id: groupID.group_id, name: '', categories: [], parent: '', children: []})
 			})
 		})
 		.then(() => {
-			console.log(JSON.stringify(userObj))
-			userObj.groups.forEach(group => {
-				knex
-					.select('name')
-					.from('groups')
-					.where('id', '=', group.id)
-				.then(gName => {
-					userObj.groups = userObj.groups.map(groupO => {
-						console.log(groupO)
-						if (groupO.id == group.id) {
-							groupO.name = gName[0].name
-							return groupO
-						} else {
-							return groupO
+			knex
+				.select('name', 'id', 'parent_id')
+				.from('groups')
+				.where('id', 'in', userObj.groups.map(i => i.id))
+			.then(groupsInfo => {
+				userObj.groups.map(group => {
+					groupsInfo.forEach(j => {
+						if (group.id == j.id) {
+							newGroup = {...group, name: j.name, parents: j.parent_id}
+							userObj.groups = userObj.groups.filter(i => i != group)
+							userObj.groups.push(newGroup)
 						}
 					})
 				})
 			})
 			.then(() => {
-				console.log(JSON.stringify(userObj))
-				res.status(200).send(JSON.stringify(userObj));
+				knex
+					.select('id', 'group_id', 'name')
+					.from('group_categories')
+					.where('group_id', 'in', userObj.groups.map(i => i.id))
+				.then(groupCats => {
+					userObj.groups.map(group => {
+						groupCats.forEach(j => {
+							if (group.id == j.group_id) {
+								let tempCats = group.categories
+								tempCats.push({id: j.id, name: j.name})
+								newGroup = {...group, categories: tempCats}
+								userObj.groups = userObj.groups.filter(i => i != group)
+								userObj.groups.push(newGroup)
+							}
+						})
+					})
+				})
+				.then(() => {
+					console.log(JSON.stringify(userObj))
+					res.status(200).send(JSON.stringify(userObj));
+				})
 			})
 		})
 	})
