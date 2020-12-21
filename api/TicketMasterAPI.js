@@ -38,15 +38,7 @@ app.post('/auth', (req, res) => {
 	//serverCookies.push(email);
 	let userObj = {
 		id: 0,
-		groups: [
-			/*{
-				id: 1,
-				name:'group1',
-				categories: [{id: 1, name:''}],
-				parents: [],
-				children: ['group2']
-			}*/
-		],
+		groups: [],
 		firstName: '',
 		lastName: '',
 		email: ''
@@ -63,17 +55,19 @@ app.post('/auth', (req, res) => {
 		userObj.firstName = userInfo[0].first_name
 		userObj.lastName = userInfo[0].last_name
 	})
-	//get array of group ids and push to groups
+	//get array of group ids
 	.then(() => {
 		knex
-			.select('group_id')
+			.select('group_members.group_id', 'groups.name')
 			.from('group_members')
+			.join('groups', 'groups.id', 'group_members.group_id')
 			.where('user_id', '=', userObj.id)
 		.then(arrayOfGroups => {
 			arrayOfGroups.forEach(groupID => {
-				userObj.groups.push({id: groupID.group_id, name: '', categories: [], parent: '', children: []})
+				userObj.groups.push({id: groupID.group_id, name: groupID.name, categories: []})
 			})
 		})
+		//get parent id and name of group
 		.then(() => {
 			knex
 				.select('name', 'id', 'parent_id')
@@ -83,34 +77,46 @@ app.post('/auth', (req, res) => {
 				userObj.groups.map(group => {
 					groupsInfo.forEach(j => {
 						if (group.id == j.id) {
-							newGroup = {...group, name: j.name, parents: j.parent_id}
-							userObj.groups = userObj.groups.filter(i => i != group)
-							userObj.groups.push(newGroup)
+							userObj.parent = {name: j.name, id: j.parent_id}
 						}
 					})
 				})
 			})
+			//get group categories
 			.then(() => {
 				knex
 					.select('id', 'group_id', 'name')
 					.from('group_categories')
 					.where('group_id', 'in', userObj.groups.map(i => i.id))
 				.then(groupCats => {
+					console.log(groupCats)
 					userObj.groups.map(group => {
 						groupCats.forEach(j => {
 							if (group.id == j.group_id) {
 								let tempCats = group.categories
 								tempCats.push({id: j.id, name: j.name})
-								newGroup = {...group, categories: tempCats}
-								userObj.groups = userObj.groups.filter(i => i != group)
-								userObj.groups.push(newGroup)
+
 							}
 						})
 					})
 				})
+				//get group children
 				.then(() => {
-					console.log(JSON.stringify(userObj))
-					res.status(200).send(JSON.stringify(userObj));
+					knex
+						.select('id', 'name')
+						.from('groups')
+						.where('parent_id', '=', userObj.id)
+					.then(childArr => {
+						console.log(childArr)
+						userObj.children = childArr.map(child => {
+							return {id: child.id, name: child.name}
+						})
+						console.log(userObj.children)
+					})
+					.then(() => {
+						console.log(JSON.stringify(userObj))
+						res.status(200).send(JSON.stringify(userObj));
+					})
 				})
 			})
 		})
@@ -183,7 +189,6 @@ app.get('/tickets', /*validateCookie,*/ (req, res) => {
 		}
 	}
 	
-	console.log(filters)
 	if (view == 1) {
 		knex
 			.select('group_id')

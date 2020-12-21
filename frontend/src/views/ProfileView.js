@@ -8,7 +8,6 @@ const ProfileView = () => {
     const context = React.useContext(StateContext);
     return (
         <div id='ViewContainer'>
-            <NavigationBar />
             <div id='ProfileContainer'>
                 <label><pre>First Name:     {context.user.firstName}</pre></label>
                 <label><pre>Last Name :     {context.user.lastName}</pre></label>
