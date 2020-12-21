@@ -12,6 +12,7 @@ import TicketsView from './views/TicketsView';
 import SubmitView from './views/SubmitView';
 import ProfileView from './views/ProfileView';
 import WorkcenterView from './views/WorkcenterView';
+import NavigationBar from './components/NavigationBar';
 
 const App = () => {
     const context = React.useContext(StateContext);
@@ -39,7 +40,12 @@ const App = () => {
                 <Route exact path='/tickets'>
                     {
                         context.user.id !== undefined
-                        ? <TicketsView />
+                        ? (
+                            <div className='container'>
+                                <NavigationBar />
+                                <TicketsView />
+                            </div>
+                        )
                         : <Redirect to='/login' />
                     }
                 </Route>
@@ -47,23 +53,38 @@ const App = () => {
                 <Route exact path='/tickets/submit'>
                     {
                         context.user.id !== undefined
-                        ? <SubmitView />
+                        ? (
+                            <div className='container'>
+                                <NavigationBar />
+                                <SubmitView />
+                            </div>
+                        )
                         : <Redirect to='/login' />
                     }
                 </Route>
 
-                <Route path='/profile'>
+                <Route exact path='/profile'>
                     {
                         context.user.id !== undefined
-                        ? <ProfileView />
+                        ? (
+                            <div className='container'>
+                                <NavigationBar />
+                                <ProfileView />
+                            </div>
+                        )
                         : <Redirect to='/login' />
                     }
                 </Route>
 
-                <Route path='/workcenter'>
+                <Route exact path='/workcenter'>
                     {
                         context.user.id !== undefined
-                        ? <WorkcenterView />
+                        ? (
+                            <div className='container'>
+                                <NavigationBar />
+                                <WorkcenterView />
+                            </div>
+                        )
                         : <Redirect to='/login' />
                     }
                 </Route>
