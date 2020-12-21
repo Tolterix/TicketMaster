@@ -5,71 +5,92 @@ import '../App.css';
 
 const SubmitView = () => {
 	const context = React.useContext(StateContext);
-	const [ groupCategories, setGroupCategories ] = React.useState([]);
-
-	var groups = [
-		{ id: 1, name: '363 ISRW', parentID: null },
-		{ id: 2, name: '363 ISS', parentID: 1 },
-		{ id: 3, name: 'Server Administration', parentID: 2 },
-		{ id: 4, name: 'Client Systems', parentID: 2 },
-		{ id: 2, name: '36 IS', parentID: 1 }
-	];
-
-	var parents = [];
-
-	for (var group of groups) {
-		if (group.parentID === null) {
-			parents.push({
-				id: group.id,
-				name: group.name,
-				children: []
-			});
-
-			continue;
-		}
-
-		for (var parent of parents) {
-
-		}
-	}
-
-	React.useEffect(async () => {
-		var response = await fetch(`https://localhost:8080/groups\
-			?userID=${context.user.id}`);
-
-		var data = response.json();
+	const [ componentState, setComponentState ] = React.useState({
+		groupID: 1,
+		categoryID: 1,
+		title: '',
+		description: '',
+		submittedBy: context.user.id
 	});
 
-	function displayChildren(group) {
-		return (
-			<>
-				{
-					group.children.length === 0
-					? <option value={ group.id }>{ group.name }</option>
-					: group.children.map(child => (
-						displayChildren(child)
-					))
-				}
-			</>
-		);
+	const handleSubmitTicket = async () => {
+		var response = await fetch(`http://localhost:8080/tickets`, {
+			method: 'POST',
+			headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+			body: JSON.stringify(componentState)
+		});
+
+		var data = await response.json();
+
+		// TODO: Show an alert with ticket submission status
+	}
+
+	const handleGroupSelected = (event) => {
+		setComponentState({
+			...componentState,
+			groupID: Number(event.target.value)
+		});
+	}
+
+	const handleCategorySelected = (event) => {
+		setComponentState({
+			...componentState,
+			categoryID: Number(event.target.value)
+		});
+	}
+
+	const handleChange = (event) => {
+		setComponentState({
+			...componentState,
+			[event.target.name]: event.target.value
+		});
 	}
 
 	return (
 		<div className='submit-view'>
-			<form>
-				<label for='organization'>Organization:</label>
-				<select name='organization' id='organization'>
+			<div id='submit-form'>
+				<label htmlFor='organization'>Organization:</label>
+				<select name='groupID' id='organization'>
 					{
-						!parents
+						!context.user.groups
 						? null
-						: parents.map(parent => {
+						: context.user.groups.map(group => (
+							<option key={ group.id } value={ group.id }
+								onClick={ handleGroupSelected }>
+								{ group.name }
+							</option>
+						))
+					}
+				</select>
+
+				<label htmlFor='category'>Category:</label>
+				<select name='categoryID' id='category'>
+					{
+						componentState.groupID === undefined
+						? null
+						: context.user.groups[componentState.groupID - 1]
+							.categories.map(category => {
 							return (
-								displayChildren(parent)
+								<option key={ category.id } value={ category.id }
+									onClick={ handleCategorySelected }>
+									{ category.name }
+								</option>
 							);
 						})
 					}
 				</select>
-			</form>
+
+				<label htmlFor='title'>Title:</label>
+				<input type='text' name='title' onChange={ handleChange } />
+
+				<label htmlFor='description'>Description:</label>
+				<textarea type='text' name='description' onChange={ handleChange } />
+
+				<button type='submit' onClick={ handleSubmitTicket }>Submit</button>
+			</div>
 		</div>
 	);
 }
