@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { StateContext } from '../State.js';
+import { StateContext } from '../State';
 
 const TicketTable = () => {
     const context = React.useContext(StateContext);
