@@ -1,7 +1,7 @@
 import React from 'react';
 import { StateContext } from '../State';
 
-const TicketUpdateTable = () => {
+const TicketUpdatesTable = () => {
     const context = React.useContext(StateContext);
 
     var ticketUpdates;
@@ -38,4 +38,4 @@ const TicketUpdateTable = () => {
     );
 }
 
-export default TicketUpdateTable;
+export default TicketUpdatesTable;
