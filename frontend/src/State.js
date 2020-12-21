@@ -8,24 +8,20 @@ const StateProvider = (props) => {
             id: 2,
             groups: [
                 {
-                    name:'group1',
-                    parents: [],
-                    children: ['group2']
+                    id: 1,
+                    name: '363 ISS',
+                    categories: [
+                        { id: 1, name: 'Client Systems' },
+                        { id: 2, name: 'Server Administration' }
+                    ]
                 },
                 {
-                    name: 'group2',
-                    parents: ['group1'],
-                    children: ['group3', 'group4']
-                },
-                {
-                    name:'group3',
-                    parents: ['group2'],
-                    children: ['group4']
-                },
-                {
-                    name:'group4',
-                    parents: ['group2', 'group3'],
-                    children: []
+                    id: 2,
+                    name: '633 CS',
+                    categories: [
+                        { id: 3, name: 'Network Infrastructure' },
+                        { id: 4, name: 'Cyber Security' }
+                    ]
                 },
             ],
             firstName: 'no first name',
