@@ -1,7 +1,9 @@
 import React from 'react';
 import { StateContext } from '../State';
 
+import NavigationBar from '../components/NavigationBar';
 import TicketDetails from '../components/TicketDetails';
+import TicketUpdatesTable from '../components/TicketUpdatesTable';
 import TicketTable from '../components/TicketTable';
 
 const TicketsView = () => {
@@ -11,15 +13,11 @@ const TicketsView = () => {
         <div className='tickets-view'>
             <div>
                 <section id='ticket-details'>
-                    {
-                        context.tickets.selected
-                        ? <TicketDetails ticketID={context.tickets.selected} />
-                        : null
-                    }
+                    <TicketDetails />
                 </section>
 
                 <section id='ticket-updates'>
-
+                    <TicketUpdatesTable />
                 </section>
             </div>
 
