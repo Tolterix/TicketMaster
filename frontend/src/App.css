@@ -1,28 +1,74 @@
-html{
+html {
     font-size: 1.75vw;
 }
 
-#ViewContainer{
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: sans-serif;
+}
+
+.container {
+    display: flex;
+}
+
+/* Profile Page */
+#ViewContainer {
     display:               grid;
     grid-template-columns: 1fr 7fr;
 }
 
-#ProfileContainer{
+#ProfileContainer {
     margin-left:    1vw;
     display:        flex;
     flex-direction: column;
 }
 
-#GroupLabel{
+#GroupLabel {
     text-align: center;
 }
 
-#GroupsContainer{
+#GroupsContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-top: 2vw;
 }
 
-#GroupNames{
+#GroupNames {
     justify-self: center;
 }
+
+/* Tickets Page */
+.tickets-view {
+    display: flex;
+    flex-grow: 1;
+}
+
+.tickets-view .ticket-details {
+
+}
+
+.tickets-view .ticket-details p {
+    font-size: 24px;
+    margin: 0px;
+}
+
+.tickets-view .ticket-updates {
+    padding: auto;
+    align-self: flex-start;
+}
+
+.tickets-view .ticket-updates table {
+    font-size: 24px;
+}
+
+.tickets-view .ticket-table {
+    margin-left: auto;
+    padding-right: 2%;
+}
+
+.tickets-view .ticket-table table {
+    font-size: 24px;
+}
+
+/* Submit Page */
