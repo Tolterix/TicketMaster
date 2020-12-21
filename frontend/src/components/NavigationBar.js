@@ -5,11 +5,11 @@ import AirForceLogo from './AirForceLogo.png';
 
 function NavigationBar() {
     return (
-        <div className='navbar-grid'> 
+        <div className='navbar-grid'>
             <nav className='nav-menu'>
                 <ul className='nav-menu-items'>
                     <div className="box-a">
-                        <li className='airforce-logo'> 
+                        <li className='airforce-logo'>
                             <a href='/'>
                                 <img src = {AirForceLogo}
                                 alt='Air Force Logo'/>
@@ -17,7 +17,7 @@ function NavigationBar() {
                         </li>
                     </div>
                     <div className="box-b">
-                        <li className="nav-text"> 
+                        <li className="nav-text">
                             <a href="/tickets">
                                 View Tickets
                             </a>
@@ -59,4 +59,4 @@ function NavigationBar() {
 
 
 }
-export default NavigationBar; 
+export default NavigationBar;

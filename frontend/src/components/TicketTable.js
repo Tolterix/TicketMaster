@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { StateContext } from '../State.js';
+import { StateContext } from '../State';
 
 const TicketTable = () => {
     const context = React.useContext(StateContext);
@@ -14,6 +14,16 @@ const TicketTable = () => {
 
         tickets = await response.json();
     });
+
+    const handleClick = (event) => {
+        context.setState({
+            ...context,
+            tickets: {
+                ...context.tickets,
+                selected: Number(event.currentTarget.value)
+            }
+        });
+    }
 
     return (
         <table>
@@ -30,7 +40,8 @@ const TicketTable = () => {
                 ? null
                 : tickets.map(ticket => {
                     return (
-                        <tr>
+                        <tr key={ ticket.id } value={ ticket.id }
+                            onClick={ handleClick }>
                             <td>{ ticket.id }</td>
                             <td>{ ticket.title }</td>
                             <td>{ ticket.status }</td>

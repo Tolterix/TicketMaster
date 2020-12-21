@@ -9,28 +9,19 @@ const StateProvider = (props) => {
             groups: [
                 {
                     id: 1,
-                    name:'group1',
-                    categories: [{id: 1, name:''}],
-                    parents: [],
-                    children: ['group2']
+                    name: '363 ISS',
+                    categories: [
+                        { id: 1, name: 'Client Systems' },
+                        { id: 2, name: 'Server Administration' }
+                    ]
                 },
                 {
                     id: 2,
-                    name: 'group2',
-                    parents: ['group1'],
-                    children: ['group3', 'group4']
-                },
-                {
-                    id: 3,
-                    name:'group3',
-                    parents: ['group2'],
-                    children: ['group4']
-                },
-                {
-                    id: 4,
-                    name:'group4',
-                    parents: ['group2', 'group3'],
-                    children: []
+                    name: '633 CS',
+                    categories: [
+                        { id: 3, name: 'Network Infrastructure' },
+                        { id: 4, name: 'Cyber Security' }
+                    ]
                 },
             ],
             firstName: 'no first name',
@@ -39,7 +30,7 @@ const StateProvider = (props) => {
         },
         tickets: {
             view: 0,
-            selected: 1
+            selected: 0
         },
         hierarchy: [],
         setState: (newState) => {
