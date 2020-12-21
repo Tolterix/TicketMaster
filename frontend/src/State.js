@@ -34,7 +34,7 @@ const StateProvider = (props) => {
         },
         tickets: {
             view: 0,
-            selected: 1
+            selected: 0
         },
         hierarchy: [],
         setState: (newState) => {
