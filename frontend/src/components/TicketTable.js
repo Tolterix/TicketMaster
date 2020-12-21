@@ -15,6 +15,16 @@ const TicketTable = () => {
         tickets = await response.json();
     });
 
+    const handleClick = (event) => {
+        context.setState({
+            ...context,
+            tickets: {
+                ...context.tickets,
+                selected: Number(event.currentTarget.value)
+            }
+        });
+    }
+
     return (
         <table>
             <h1>Tickets</h1>
@@ -30,7 +40,8 @@ const TicketTable = () => {
                 ? null
                 : tickets.map(ticket => {
                     return (
-                        <tr>
+                        <tr key={ ticket.id } value={ ticket.id }
+                            onClick={ handleClick }>
                             <td>{ ticket.id }</td>
                             <td>{ ticket.title }</td>
                             <td>{ ticket.status }</td>
