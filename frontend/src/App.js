@@ -40,9 +40,11 @@ const App = () => {
                     {
                         context.user.id !== undefined
                         ? (
-                            <div className='container'>
+                            <div id="wrapper">
                                 <NavigationBar />
-                                <TicketsView />
+                                <div id="content">
+                                    <TicketsView />
+                                </div>
                             </div>
                         )
                         : <Redirect to='/login' />
@@ -53,9 +55,11 @@ const App = () => {
                     {
                         context.user.id !== undefined
                         ? (
-                            <div className='container'>
+                            <div id="wrapper">
                                 <NavigationBar />
-                                <SubmitView />
+                                <div id="content">
+                                    <SubmitView />
+                                </div>
                             </div>
                         )
                         : <Redirect to='/login' />
@@ -66,9 +70,11 @@ const App = () => {
                     {
                         context.user.id !== undefined
                         ? (
-                            <div className='container'>
+                            <div id="wrapper">
                                 <NavigationBar />
-                                <ProfileView />
+                                <div id="content">
+                                    <ProfileView />
+                                </div>
                             </div>
                         )
                         : <Redirect to='/login' />
@@ -79,9 +85,11 @@ const App = () => {
                     {
                         context.user.id !== undefined
                         ? (
-                            <div className='container'>
+                            <div id="wrapper">
                                 <NavigationBar />
-                                <WorkcenterView />
+                                <div id="content">
+                                    <WorkcenterView />
+                                </div>
                             </div>
                         )
                         : <Redirect to='/login' />

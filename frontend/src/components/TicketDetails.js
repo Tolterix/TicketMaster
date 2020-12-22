@@ -18,26 +18,28 @@ const TicketDetails = () => {
             {
                 !ticket
                 ? (
-                    <>
-                        <p>Ticket #:</p>
-                        <p>Status:</p>
-                        <p>Title:</p>
-                        <p>Description:</p>
-                        <p>Category:</p>
-                        <p>Submitted By:</p>
-                        <p>Created At:</p>
-                    </>
+                    <div className="text">
+                        <p>
+                            <b>Ticket #:</b>
+                            <br></br>
+                            <b>Status:</b>
+                            <br></br>
+                            <b>Title:</b>
+                            <br></br>
+                            <b>Description:</b>
+                            <br></br>
+                            <b>Category:</b>
+                            <br></br>
+                            <b>Submitted By:</b>
+                            <br></br>
+                            <b>Created At:</b>
+                        </p>
+                    </div>
                 )
                 : (
-                    <>
-                        <p>Ticket #: { ticket.id }</p>
-                        <p>Status: { ticket.status }</p>
-                        <p>Title: { ticket.title }</p>
-                        <p>Description: { ticket.description }</p>
-                        <p>Category: { ticket.category }</p>
-                        <p>Submitted By: { ticket.submittedBy }</p>
-                        <p>Created At: { ticket.createdAt }</p>
-                    </>
+                    <div className="text-center">
+
+                    </div>
                 )
             }
         </>

@@ -5,7 +5,9 @@ import { StateContext } from '../State';
 const TicketTable = () => {
     const context = React.useContext(StateContext);
 
-    var tickets;
+    var tickets = [
+        { id: 1, title: "New Ticket", status: "New", createdAt: "Today", updatedAt: "Today"}
+    ];
     React.useEffect(async () => {
         var response = await fetch(
             `http://localhost:8080/tickets?userID=${context.user.id}\
@@ -36,34 +38,44 @@ const TicketTable = () => {
     }
 
     return (
-        <table>
-            <h1>Tickets</h1>
-            <label>Viewing: { context.tickets.view === 0 ? 'Submitted' : 'Received' }</label>
-            <button onClick={ changeView }>Toggle View</button>
-            <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-            </tr>
-            {
-                !tickets
-                ? null
-                : tickets.map(ticket => {
-                    return (
-                        <tr key={ ticket.id } value={ ticket.id }
-                            onClick={ handleTicketSelect }>
-                            <td>{ ticket.id }</td>
-                            <td>{ ticket.title }</td>
-                            <td>{ ticket.status }</td>
-                            <td>{ ticket.createdAt }</td>
-                            <td>{ ticket.updatedAt }</td>
-                        </tr>
-                    );
-                })
-            }
-        </table>
+        <div className="table-responsive">
+            <table className="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        !tickets
+                        ? null
+                        : tickets.map((ticket, i) => (
+                            <tr key={ ticket.id } value={ ticket.id }
+                                onClick={ handleTicketSelect }>
+                                <td>
+                                    {
+                                        i === 0
+                                        ? <input type="radio" name="selection" value={ ticket.id } checked />
+                                        : <input type="radio" name="selection" value={ ticket.id }/>
+                                    }
+                                </td>
+                                <td>{ ticket.id }</td>
+                                <td>{ ticket.title }</td>
+                                <td>{ ticket.status }</td>
+                                <td>{ ticket.createdAt }</td>
+                                <td>{ ticket.updatedAt }</td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
     );
 }
 
