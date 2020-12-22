@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { StateContext } from '../State';
 import NavigationBar from '../components/NavigationBar';
-import '../App.css';
 
 const ProfileView = () => {
     const context = React.useContext(StateContext);
