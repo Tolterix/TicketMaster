@@ -1,7 +1,6 @@
 import React from 'react';
 import { StateContext } from '../State';
 
-import NavigationBar from '../components/NavigationBar';
 import TicketDetails from '../components/TicketDetails';
 import TicketUpdatesTable from '../components/TicketUpdatesTable';
 import TicketTable from '../components/TicketTable';
@@ -12,16 +11,16 @@ const TicketsView = () => {
     return (
         <div className='tickets-view'>
             <div>
-                <section id='ticket-details'>
+                <section id='ticket-details' className='ticket-details'>
                     <TicketDetails />
                 </section>
 
-                <section id='ticket-updates'>
+                <section id='ticket-updates' className='ticket-updates'>
                     <TicketUpdatesTable />
                 </section>
             </div>
 
-            <section id='ticket-table'>
+            <section id='ticket-table' className='ticket-table'>
                 <TicketTable />
             </section>
         </div>
