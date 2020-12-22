@@ -4,17 +4,17 @@ import { StateContext } from '../State';
 
 const TicketTable = () => {
     const context = React.useContext(StateContext);
+    const [ componentState, setComponentState ] = React.useState({});
 
-    var tickets = [
-        { id: 1, title: "New Ticket", status: "New", createdAt: "Today", updatedAt: "Today"}
-    ];
     React.useEffect(async () => {
         var response = await fetch(
             `http://localhost:8080/tickets?userID=${context.user.id}\
                 &view=${context.tickets.view}`
         );
 
-        tickets = await response.json();
+        var data = await response.json();
+
+        setComponentState({ ...componentState, tickets: data });
     });
 
     const handleTicketSelect = (event) => {
@@ -52,9 +52,9 @@ const TicketTable = () => {
                 </thead>
                 <tbody>
                     {
-                        !tickets
+                        !componentState.tickets
                         ? null
-                        : tickets.map((ticket, i) => (
+                        : componentState.tickets.map((ticket, i) => (
                             <tr key={ ticket.id } value={ ticket.id }
                                 onClick={ handleTicketSelect }>
                                 <td>
