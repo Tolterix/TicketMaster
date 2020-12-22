@@ -164,6 +164,7 @@ app.post('/auth', (req, res) => {
 //http://localhost:3000/tickets?userID=1
 app.get('/tickets', /*validateCookie,*/ (req, res) => {
 	let {userID, status, view} = req.query
+	console.log(req.query)
 	//let {cookies} = req;
 	let filters = 'TRUE';
 	function wipeFilter() {
@@ -243,7 +244,7 @@ app.get('tickets/details', /*validateCookie,*/ (req, res) => {
 	when updating tickets in the ticket_update table, make sure to update the updated_at in the tickets table
 */
 
-//app.post()
+//app.post('tickets')
 
 /*
 	#updating a ticket

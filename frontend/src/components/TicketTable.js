@@ -4,18 +4,6 @@ import { StateContext } from '../State';
 
 const TicketTable = () => {
     const context = React.useContext(StateContext);
-    const [ componentState, setComponentState ] = React.useState({});
-
-    React.useEffect(async () => {
-        var response = await fetch(
-            `http://localhost:8080/tickets?userID=${context.user.id}\
-                &view=${context.tickets.view}`
-        );
-
-        var data = await response.json();
-
-        setComponentState({ ...componentState, tickets: data });
-    });
 
     const handleTicketSelect = (event) => {
         context.setState({
@@ -52,25 +40,27 @@ const TicketTable = () => {
                 </thead>
                 <tbody>
                     {
-                        !componentState.tickets
+                        context.tickets.queue.length < 0
                         ? null
-                        : componentState.tickets.map((ticket, i) => (
-                            <tr key={ ticket.id } value={ ticket.id }
-                                onClick={ handleTicketSelect }>
-                                <td>
-                                    {
-                                        i === 0
-                                        ? <input type="radio" name="selection" value={ ticket.id } checked />
-                                        : <input type="radio" name="selection" value={ ticket.id }/>
-                                    }
-                                </td>
-                                <td>{ ticket.id }</td>
-                                <td>{ ticket.title }</td>
-                                <td>{ ticket.status }</td>
-                                <td>{ ticket.createdAt }</td>
-                                <td>{ ticket.updatedAt }</td>
-                            </tr>
-                        ))
+                        : context.tickets.queue.map((ticket, i) => {
+                            return (
+                                <tr key={ ticket.id } value={ ticket.id }
+                                    onClick={ handleTicketSelect }>
+                                    <td>
+                                        {
+                                            i === 0
+                                            ? <input type="radio" name="selection" value={ ticket.id } checked />
+                                            : <input type="radio" name="selection" value={ ticket.id }/>
+                                        }
+                                    </td>
+                                    <td>{ ticket.id }</td>
+                                    <td>{ ticket.title }</td>
+                                    <td>{ ticket.status }</td>
+                                    <td>{ ticket.created_at }</td>
+                                    <td>{ ticket.updated_at }</td>
+                                </tr>
+                            )
+                        })
                     }
                 </tbody>
                 <tfoot></tfoot>

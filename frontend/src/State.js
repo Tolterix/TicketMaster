@@ -45,7 +45,8 @@ const StateProvider = (props) => {
         navbarRedirect: '/',
         tickets: {
             view: 0,
-            selected: 0
+            selected: 0,
+            queue: []
         },
         hierarchy: [],
         setState: (newState) => {

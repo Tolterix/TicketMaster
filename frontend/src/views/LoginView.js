@@ -5,10 +5,10 @@ import { StateContext } from '../State';
 const LoginView = () => {
     const context = React.useContext(StateContext);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        fetch("http://localhost:8080/auth", {
+        let res = await fetch("http://localhost:8080/auth", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -18,13 +18,24 @@ const LoginView = () => {
                 email: event.target.email.value,
                 password: event.target.password.value
             })
-        }).then(response => {
-            if (response.status === 200) {
-                response.json().then(i => {
-                    context.setState({user: i})
-                })
-            }
         })
+        
+        if (res.status === 200) {
+            let userID = await res.json()
+
+            res = await fetch(`http://localhost:8080/tickets?userID=${userID.id}&view=1`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+            })
+            
+            if (res.status === 200) {
+                let ticketQueue = await res.json()
+                context.setState({user: userID, tickets: {...context.tickets, queue: ticketQueue.tickets}})
+            }
+        }
     }
 
     if (context.user.id !== 0) {
