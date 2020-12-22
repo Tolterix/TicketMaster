@@ -17,7 +17,6 @@ import NavigationBar from './components/NavigationBar';
 const App = () => {
     const context = React.useContext(StateContext);
 
-    console.log(context);
     return (
         <Router>
             <Switch>
