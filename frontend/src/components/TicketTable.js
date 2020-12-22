@@ -15,7 +15,7 @@ const TicketTable = () => {
         tickets = await response.json();
     });
 
-    const handleClick = (event) => {
+    const handleTicketSelect = (event) => {
         context.setState({
             ...context,
             tickets: {
@@ -25,9 +25,21 @@ const TicketTable = () => {
         });
     }
 
+    const changeView = () => {
+        context.setState({
+            ...context,
+            tickets: {
+                ...context.tickets,
+                view: (context.tickets.view + 1) % 2
+            }
+        });
+    }
+
     return (
         <table>
             <h1>Tickets</h1>
+            <label>Viewing: { context.tickets.view === 0 ? 'Submitted' : 'Received' }</label>
+            <button onClick={ changeView }>Toggle View</button>
             <tr>
                 <th>#</th>
                 <th>Title</th>
@@ -41,7 +53,7 @@ const TicketTable = () => {
                 : tickets.map(ticket => {
                     return (
                         <tr key={ ticket.id } value={ ticket.id }
-                            onClick={ handleClick }>
+                            onClick={ handleTicketSelect }>
                             <td>{ ticket.id }</td>
                             <td>{ ticket.title }</td>
                             <td>{ ticket.status }</td>
