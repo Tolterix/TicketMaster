@@ -1,23 +1,22 @@
-import React from 'react';
-import { StateContext } from '../State';
-import '../App.css';
+import React from "react";
+import { StateContext } from "../State";
 
 const SubmitView = () => {
 	const context = React.useContext(StateContext);
 	const [ componentState, setComponentState ] = React.useState({
 		groupID: 1,
 		categoryID: 1,
-		title: '',
-		description: '',
+		title: "",
+		description: "",
 		submittedBy: context.user.id
 	});
 
 	const handleSubmitTicket = async () => {
 		var response = await fetch(`http://localhost:8080/tickets`, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             },
 			body: JSON.stringify(componentState)
 		});
@@ -49,46 +48,76 @@ const SubmitView = () => {
 	}
 
 	return (
-		<div className='submit-view'>
-			<label htmlFor='organization'>Organization:</label>
-			<select name='groupID' id='organization'>
-				{
-					!context.user.groups
-					? null
-					: context.user.groups.map(group => (
-						<option key={ group.id } value={ group.id }
-							onClick={ handleGroupSelected }>
-							{ group.name }
-						</option>
-					))
-				}
-			</select>
-
-			<label htmlFor='category'>Category:</label>
-			<select name='categoryID' id='category'>
-				{
-					componentState.groupID === undefined
-					? null
-					: context.user.groups[componentState.groupID - 1]
-						.categories.map(category => {
-						return (
-							<option key={ category.id } value={ category.id }
-								onClick={ handleCategorySelected }>
-								{ category.name }
-							</option>
-						);
-					})
-				}
-			</select>
-
-			<label htmlFor='title'>Title:</label>
-			<input type='text' name='title' onChange={ handleChange } />
-
-			<label htmlFor='description'>Description:</label>
-			<textarea type='text' name='description' onChange={ handleChange } />
-
-			<button onClick={ handleSubmitTicket }>Submit</button>
-		</div>
+		<>
+			<div className="container">
+				<div className="row justify-content-center">
+					<div className="col-xl-10 col-lg-12 col-md-9">
+						<div className="card-body p-0">
+							<div className="row">
+								<div className="col-lg-6 d-none d-lg-block"></div>
+								<div className="col-lg-6">
+									<div className="user">
+										<canvas height="0px" width="700px"></canvas>
+										<div className="form-group">
+											<div className="h6 mb-0 font-weight-bold text-gray-800">
+												Select an organization:
+											</div>
+											<select className="form-control form-control-user">
+												{
+													!context.user.groups
+													? null
+													: context.user.groups.map(group => (
+														<option key={ group.id } value={ group.id }
+															onClick={ handleGroupSelected }>
+															{ group.name }
+														</option>
+													))
+												}
+											</select>
+										</div>
+										<div className="form-group">
+											<div className="h6 mb-0 font-weight-bold text-gray-800">
+												Select a category:
+											</div>
+											<select className="form-control form-control-user">
+												{
+													componentState.groupID === undefined
+													? null
+													: context.user.groups[componentState.groupID - 1]
+														.categories.map(category => {
+														return (
+															<option key={ category.id } value={ category.id }
+																onClick={ handleCategorySelected }>
+																{ category.name }
+															</option>
+														);
+													})
+												}
+											</select>
+										</div>
+										<div className="form-group">
+											<div className="h6 mb-0 font-weight-bold text-gray-800">
+												Enter a ticket title:
+											</div>
+											<input type="text" className="form-control form-control-user" onChange={ handleChange } />
+										</div>
+										<div className="form-group">
+											<div className="h6 mb-0 font-weight-bold text-gray-800">
+												Enter a ticket description:
+											</div>
+											<textarea type="text" className="form-control form-control-user" onChange={ handleChange } />
+										</div>
+										<div className="form-group">
+											<button className="btn btn-secondary" onClick={ handleSubmitTicket }>Submit</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</>
 	);
 }
 
