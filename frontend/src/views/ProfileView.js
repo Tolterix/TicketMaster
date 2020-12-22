@@ -22,7 +22,7 @@ const ProfileView = () => {
                                 <div>
                                     <label>Group Name: {i.name}</label>
                                     <br/>
-                                    <label><pre>   Group Parent: Parent</pre></label>
+                                    <label><pre>   Group Parent: {i.parent}</pre></label>
                                 </div>
                             )
                         })
