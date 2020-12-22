@@ -1,5 +1,5 @@
 html {
-    font-size: 1.75vw;
+    margin: 0px;
 }
 
 body {
@@ -8,11 +8,6 @@ body {
     font-family: sans-serif;
 }
 
-.container {
-    display: flex;
-}
-
-/* Profile Page */
 #ViewContainer {
     display:               grid;
     grid-template-columns: 1fr 7fr;
@@ -38,14 +33,9 @@ body {
     justify-self: center;
 }
 
-/* Tickets Page */
 .tickets-view {
     display: flex;
     flex-grow: 1;
-}
-
-.tickets-view .ticket-details {
-
 }
 
 .tickets-view .ticket-details p {
@@ -71,4 +61,16 @@ body {
     font-size: 24px;
 }
 
-/* Submit Page */
+.tickets-view .ticket-table table button {
+    padding: 4px;
+    margin-left: 10px;
+}
+
+.submit-view {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-container {
+    display: flex;
+}
