@@ -11,7 +11,9 @@ const StateProvider = (props) => {
                     id: 1,
                     name:'group1',
                     parent: 1,
-                    categories: [{id: 1, name:''}],
+                    categories: [
+                        {id: 1, name:'', parent: 'gsdfgfsd', children: ['gsfdg', 'sdfds']}
+                    ],
                     children: ['group2']
                 },
                 {
@@ -19,8 +21,8 @@ const StateProvider = (props) => {
                     name: '363 ISS',
                     parent: 4,
                     categories: [
-                        { id: 1, name: 'Client Systems' },
-                        { id: 2, name: 'Server Administration' }
+                        { id: 1, name: 'Client Systems', parent: 'gsdfgfsd', children: ['gsfdg', 'sdfds'] },
+                        { id: 2, name: 'Server Administration', parent: 'gsdfgfsd', children: ['gsfdg', 'sdfds'] }
                     ],
                     children: ['group2']
                 },
@@ -29,8 +31,8 @@ const StateProvider = (props) => {
                     name: '633 CS',
                     parent: 2,
                     categories: [
-                        { id: 3, name: 'Network Infrastructure' },
-                        { id: 4, name: 'Cyber Security' }
+                        { id: 3, name: 'Network Infrastructure', parent: 'gsdfgfsd', children: ['gsfdg', 'sdfds'] },
+                        { id: 4, name: 'Cyber Security', parent: 'gsdfgfsd', children: ['gsfdg', 'sdfds'] }
                     ],
                     children: ['group2']
                 },
@@ -39,6 +41,8 @@ const StateProvider = (props) => {
             lastName: 'no last name',
             email: 'email'
         },
+        navbarSwitch: 0,
+        navbarRedirect: '/',
         tickets: {
             view: 0,
             selected: 0

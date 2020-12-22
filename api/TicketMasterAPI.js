@@ -6,7 +6,6 @@ const express = require('express')
 const app = express()
 const port = 8080
 
-
 app.use(bodyParser.json())
 app.use(cors());
 
@@ -30,10 +29,11 @@ function validateCookie(req, res, next) {
 	next();
 }
 */
-
 app.post('/auth', (req, res) => {
 	const {email, password} = req.body
 
+	//validate user has .mil address with regex
+	
 	//res.cookie('email', email);
 	//serverCookies.push(email);
 	let userObj = {
@@ -64,91 +64,83 @@ app.post('/auth', (req, res) => {
 			.where('user_id', '=', userObj.id)
 		.then(arrayOfGroups => {
 			arrayOfGroups.forEach(groupID => {
-				userObj.groups.push({id: groupID.group_id, name: groupID.name, categories: []})
+				userObj.groups.push({id: groupID.group_id, name: groupID.name, parent: '', children: [], categories: []})
 			})
 		})
-		//get parent id and name of group
+		//
 		.then(() => {
 			knex
-				.select('name', 'id', 'parent_id')
+				.select('id', 'name', 'parent_id')
 				.from('groups')
-				.where('id', 'in', userObj.groups.map(i => i.id))
-			.then(groupsInfo => {
-				userObj.groups.map(group => {
-					groupsInfo.forEach(j => {
-						if (group.id == j.id) {
-							userObj.parent = {name: j.name, id: j.parent_id}
-						}
+			.then(groups => {
+				userObj.groups.forEach(userGroup => {
+					let tObj = groups.filter(i => i.id == userGroup.id)
+					if (tObj[0].parent_id != null) {
+						let nObj = groups.filter(i => i.id == tObj[0].parent_id)
+						userObj.groups = userObj.groups.filter(i => i != userGroup)
+						tGroup = {...userGroup, parent: nObj[0].name}
+						userObj.groups.push(tGroup)
+					}
+				})
+				userObj.groups.forEach(userGroup => {
+					let tObj = groups.filter(i => i.parent_id == userGroup.id)
+					tObj.forEach(child => {
+						let index = userObj.groups.indexOf(userGroup)
+						userObj.groups[index].children.push(child.name)
 					})
 				})
 			})
-			//get group categories
+			//get parent id and name of groups
 			.then(() => {
 				knex
-					.select('id', 'group_id', 'name')
-					.from('group_categories')
-					.where('group_id', 'in', userObj.groups.map(i => i.id))
-				.then(groupCats => {
-					console.log(groupCats)
+					.select('name', 'id', 'parent_id')
+					.from('groups')
+					.where('id', 'in', userObj.groups.map(i => i.id))
+				.then(groupsInfo => {
 					userObj.groups.map(group => {
-						groupCats.forEach(j => {
-							if (group.id == j.group_id) {
-								let tempCats = group.categories
-								tempCats.push({id: j.id, name: j.name})
-
+						groupsInfo.forEach(j => {
+							if (group.id == j.id) {
+								userObj.parent = {name: j.name, id: j.parent_id}
 							}
 						})
 					})
 				})
-				//get group children
+				//get group categories
 				.then(() => {
 					knex
-						.select('id', 'name')
-						.from('groups')
-						.where('parent_id', '=', userObj.id)
-					.then(childArr => {
-						console.log(childArr)
-						userObj.children = childArr.map(child => {
-							return {id: child.id, name: child.name}
+						.select('id', 'group_id', 'name')
+						.from('group_categories')
+						.where('group_id', 'in', userObj.groups.map(i => i.id))
+					.then(groupCats => {
+						userObj.groups.map(group => {
+							groupCats.forEach(j => {
+								if (group.id == j.group_id) {
+									let tempCats = group.categories
+									tempCats.push({id: j.id, name: j.name})
+								}
+							})
 						})
-						console.log(userObj.children)
 					})
+					//get group children
 					.then(() => {
-						console.log(JSON.stringify(userObj))
-						res.status(200).send(JSON.stringify(userObj));
+						knex
+							.select('id', 'name')
+							.from('groups')
+							.where('parent_id', '=', userObj.id)
+						.then(childArr => {
+							userObj.children = childArr.map(child => {
+								return {id: child.id, name: child.name}
+							})
+						})
+						.then(() => {
+							res.status(200).send(JSON.stringify(userObj));
+						})
 					})
 				})
 			})
 		})
 	})
 
-	/*
-			knex
-				.select('name', 'parent_id')
-				.from('groups')
-				.where('id', '=', groupObj.id)
-			.then(groupInfo => {
-				groupObj.name = groupInfo.name
-				knex
-					.select('name')
-					.from('groups')
-					.where('id', '=', groupObj.parent_id)
-					.then(parentName => {
-						groupObj.parentName = parentName
-					})
-			})
-		})
-
-		[
-			{
-				id: 1,
-				name:'group1',
-				categories: [{id: 1, name:'cat_name'}],
-				parents: [],
-				children: ['group2']
-			}
-		],
-		*/
 	//load group categories into state
 
 	//res.cookie('password', password);

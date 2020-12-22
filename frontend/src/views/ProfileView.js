@@ -6,6 +6,7 @@ import '../App.css';
 
 const ProfileView = () => {
     const context = React.useContext(StateContext);
+    
     return (
         <div id='ViewContainer'>
             <div id='ProfileContainer'>
@@ -21,7 +22,7 @@ const ProfileView = () => {
                                 <div>
                                     <label>Group Name: {i.name}</label>
                                     <br/>
-                                    <label><pre>   Group Parent(s): {i.parents}</pre></label>
+                                    <label><pre>   Group Parent: Parent</pre></label>
                                 </div>
                             )
                         })
