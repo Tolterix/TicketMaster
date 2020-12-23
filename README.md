@@ -56,13 +56,16 @@ The user will experience four pages.
 ## **API Usage**
 
 POST PATH/auth => requires {email: '', password: ''} as body parameters
+
 returns userID, email, first name, last name, and groups(w/ parent/children/name/id/categories)
 
 GET PATH/tickets => requires userID as query parameter and has optional query parameter of view(0 or 1)
+
 returns all tickets the user has based on view, with 0 showing submitted tickets(default)
 	1 showing tickets assigned to their groups
 
 GET PATH/tickets/details => requires userID as query parameter
+
 returns all ticket updates w/ id, description, updated by and updated at information
 
 ## *Credits*
