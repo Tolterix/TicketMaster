@@ -66,16 +66,16 @@ returns all ticket updates w/ id, description, updated by and updated at informa
 
 ## Example Pages
 Login Page
-<img src="GitHubExamples/LoginPage.png" alt="Image not found" />
+<img src="GithubExamples/LoginPage.png" alt="Image not found" />
 
 Profile Page
-<img src="GitHubExamples/ProfilePage.png" alt="Image not found" />
+<img src="GithubExamples/ProfilePage.png" alt="Image not found" />
 
 Tickets Page
-<img src="GitHubExamples/TicketPage.png" alt="Image not found" />
+<img src="GithubExamples/TicketPage.png" alt="Image not found" />
 
 Submit Ticket Page
-<img src="GitHubExamples/SubmitTicketPage.png" alt="Image not found" />
+<img src="GithubExamples/SubmitTicketPage.png" alt="Image not found" />
 
 ## *Credits*
 
