@@ -5,31 +5,31 @@ This app will help the users and technicians of AF IT networks enter and track t
 
 Users should **clone** this locally. In the project directory, you will need to have **npm or yarn**, **knex**, and **nodemon** packages installed.
 ### **Postgres Server Startup**
-1. Start and seed data user data into local Postgres server.  
+**1.** Start and seed data user data into local Postgres server.  
 
-2. In terminal *psql postgres*
+**2.** In terminal *psql postgres*
 
 *create database ticketdb* 
 
 #exit database
 
-3. In project directory, seed the SQL server with the following commands
+**3.** In project directory, seed the SQL server with the following commands
 
-npx knex migrate:latest
+    npx knex migrate:latest
 
-npx knex seed:run --specific=seed_1users.js
+    npx knex seed:run --specific=seed_1users.js
 
-npx knex seed:run --specific=seed_2groups.js
+    npx knex seed:run --specific=seed_2groups.js
 
-npx knex seed:run --specific=seed_3group_categories.js
+    npx knex seed:run --specific=seed_3group_categories.js
 
-npx knex seed:run --specific=seed_4group_members.js
+    npx knex seed:run --specific=seed_4group_members.js
 
-npx knex seed:run --specific=seed_5tickets.js
+    npx knex seed:run --specific=seed_5tickets.js
 
-npx knex seed:run --specific=seed_6ticket_assignments.js
+    npx knex seed:run --specific=seed_6ticket_assignments.js
 
-npx knex seed:run --specific=seed_7ticket_updates.js
+    npx knex seed:run --specific=seed_7ticket_updates.js
 
 ### **API Startup**
 
@@ -37,7 +37,7 @@ In API folder within project directory
 
 *npx nodemon TicketMasterAPI.js*
 
-### **Frontend Startup
+### **Frontend Startup**
 
 Open another terminal, within Frontend folder *npm start* and view it on localhost 3000.
 
