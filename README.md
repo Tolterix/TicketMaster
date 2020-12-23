@@ -1,31 +1,59 @@
 # TicketMaster
 ## **Description**
 This app will help the users and technicians of AF IT networks enter and track the status of IT support tickets.
-## **Installation**
+## **Setup**
 
-Users should **clone** this locally. Will need to have **npm or yarn** packages installed.
+Users should **clone** this locally. In the project directory, you will need to have **npm or yarn**, **knex**, and **nodemon** packages installed.
+### **Postgres Server Startup**
+**1.** Start and seed data user data into local Postgres server.  
 
-1. Start and seed data user data into local Postgres server.  
+**2.** In terminal *psql postgres*
 
-2. In terminal *psql postgres*, *create database ticketdb* 
+*create database ticketdb* 
 
-3. Second terminal window: be in *TicketMasterAPI.js* folder
+#exit database
 
-Enter **npm start** in the your local directory and view it on localhost 3000. 
+**3.** In project directory, seed the SQL server with the following commands
+
+    npx knex migrate:latest
+
+    npx knex seed:run --specific=seed_1users.js
+
+    npx knex seed:run --specific=seed_2groups.js
+
+    npx knex seed:run --specific=seed_3group_categories.js
+
+    npx knex seed:run --specific=seed_4group_members.js
+
+    npx knex seed:run --specific=seed_5tickets.js
+
+    npx knex seed:run --specific=seed_6ticket_assignments.js
+
+    npx knex seed:run --specific=seed_7ticket_updates.js
+
+### **API Startup**
+
+In API folder within project directory
+
+*npx nodemon TicketMasterAPI.js*
+
+### **Frontend Startup**
+
+Open another terminal, within Frontend folder *npm start* and view it on localhost 3000.
+
 ## **Usage**
-  The user will experience five pages.
-    1. Login view  - Here the user will enter their username and password
+
+The user will experience four pages.
+
+1. Login view  - Here the user will enter their username and password
     
-    2. Profile view  Here the user will see their name, email, and group(s) they belong to.
+2. Profile view  Here the user will see their name, email, and group(s) they belong to.
  
-    3. Tickets view - Here the user will see the ticket numbers they have submitted, current status, title. description, and when it was created
+3. Tickets view - Here the user will see the ticket numbers they have submitted, current status, title. description, and when it was created
     
-    4. Submit ticket view - Here the user can select their parent organization and submit a ticket
+4. Submit ticket view - Here the user can select their parent organization and submit a ticket
     
-    5. Workcenter view
- ## *APIs*
-  TicketmasterAPI.js
-    This file connects the backend data on SQL to the frontend user views
-  ## *Credits*
-  Josiah, Jared, Trevor, Henry
+## *Credits*
+
+Josiah, Jared, Trevor, Henry
       
