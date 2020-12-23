@@ -64,6 +64,19 @@ returns all tickets the user has based on view, with 0 showing submitted tickets
 ##### GET PATH/tickets/details => requires userID as query parameter
 returns all ticket updates w/ id, description, updated by and updated at information
 
+## Example Pages
+Login Page
+<img src="GitHubExamples/LoginPage.png" alt="Image not found" />
+
+Profile Page
+<img src="GitHubExamples/ProfilePage.png" alt="Image not found" />
+
+Tickets Page
+<img src="GitHubExamples/TicketPage.png" alt="Image not found" />
+
+Submit Ticket Page
+<img src="GitHubExamples/SubmitTicketPage.png" alt="Image not found" />
+
 ## *Credits*
 
 Josiah, Jared, Trevor, Henry
