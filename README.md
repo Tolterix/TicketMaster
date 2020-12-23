@@ -65,17 +65,17 @@ returns all tickets the user has based on view, with 0 showing submitted tickets
 returns all ticket updates w/ id, description, updated by and updated at information
 
 ## Example Pages
-Login Page
-<img src="GithubExamples/LoginPage.png" alt="Image not found" />
+###### Login Page
+<img src="GithubExamples/LoginPage.png" alt="Image not found" height="500"/>
 
-Profile Page
-<img src="GithubExamples/ProfilePage.png" alt="Image not found" />
+###### Profile Page
+<img src="GithubExamples/ProfilePage.png" alt="Image not found" height="500"/>
 
-Tickets Page
-<img src="GithubExamples/TicketPage.png" alt="Image not found" />
+###### Tickets Page
+<img src="GithubExamples/TicketPage.png" alt="Image not found" height="500"/>
 
-Submit Ticket Page
-<img src="GithubExamples/SubmitTicketPage.png" alt="Image not found" />
+###### Submit Ticket Page
+<img src="GithubExamples/SubmitTicketPage.png" alt="Image not found" height="500"/>
 
 ## *Credits*
 
