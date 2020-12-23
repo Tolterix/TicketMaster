@@ -1,0 +1,40 @@
+Problem Statement: (Trevor)
+	AF IT Customers cannot view their tickets on their own, and have to call someone to get updates.
+
+Persona Delivering For: (Trevor)
+	AF IT Customers(everyone in air force)
+
+Demo Features: (Josiah)
+	Login
+	Viewing Tickets
+	Submit a Ticket
+	Profile
+
+Technologies used: (Josiah) 
+	Cypress                 f/ integration testing
+	Jest                    f/ functional unit testing
+	Knex                    f/ api server
+	Bootstrap               f/ CSS
+	React                   f/ frontend
+	Postgres                f/ database
+	LucidCharts             f/ Wire Diagram
+	Atom, VSCode, Notepad++ f/ IDE
+
+Obstacles: (Henry)
+	Bootstraps obfuscate code and make it harder to test/navigate
+	Scheduling conflicts around holiday season made it harder to coordinate work
+	API integration to frontend
+	Starting database and running server on dev machines
+	Git management
+	No user story management system
+	Anyone could push any code to master at any time without review
+
+Positive Takeaways: (Henry)
+	Diverse skillset
+	Learning to compromise on scope(Expectation Management)
+	Learning about different technologies
+	Working on semi difficult project allowed for lots of growth at all levels
+	Exposure to different IDEs
+	Database structure was well defined
+	Wire diagram f/ website was well defined
+	Had honest retro feedback

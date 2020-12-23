@@ -164,7 +164,7 @@ app.post('/auth', (req, res) => {
 //http://localhost:3000/tickets?userID=1
 app.get('/tickets', /*validateCookie,*/ (req, res) => {
 	let {userID, status, view} = req.query
-	console.log(req.query)
+	
 	//let {cookies} = req;
 	let filters = 'TRUE';
 	function wipeFilter() {
@@ -219,10 +219,6 @@ app.get('/tickets', /*validateCookie,*/ (req, res) => {
 	}
 })
 
-app.get('/userProfile', /*validateCookie,*/ (req, res) => {
-	
-})
-
 /*
 	#get specific ticket details
 	GET /tickets/details
@@ -233,7 +229,34 @@ app.get('/userProfile', /*validateCookie,*/ (req, res) => {
 
 
 app.get('tickets/details', /*validateCookie,*/ (req, res) => {
-	//request.params using ??
+	let {userID, ticketID} = req.query
+
+	knex
+		.select('group_id')
+		.from('group_members')
+		.where('user_id', '=', userID)
+	.then(i => {
+		groups = i.map(j => j.group_id);
+		return knex
+			.select('id')
+			.from('group_categories')
+			.where('group_id', 'in', groups)
+	}).then(i => {
+		categories = i.map(j => j.id)
+		return knex
+			.select('tickets.id')
+			.from('tickets')
+			.where('category_id', 'in', categories)
+	}).then(i => {
+		ticketIDs = i.map(j => j.id)
+		return knex
+			.select('ticket_id', 'description', 'updated_by', 'updated_at')
+			.from('ticket_updates')
+			.where('ticket_id', 'in', ticketIDs)
+	}).then(i => {
+		console.log(i)
+		res.send({updates: i});
+	})
 })
 
 /*
@@ -244,7 +267,7 @@ app.get('tickets/details', /*validateCookie,*/ (req, res) => {
 	when updating tickets in the ticket_update table, make sure to update the updated_at in the tickets table
 */
 
-//app.post('tickets')
+//app.post('tickets/updates')
 
 /*
 	#updating a ticket

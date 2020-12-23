@@ -23,6 +23,14 @@ const LoginView = () => {
         if (res.status === 200) {
             let userID = await res.json()
 
+            res = await fetch(`http://localhost:8080/tickets/details?userID=${userID.id}`, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+            })
+
             res = await fetch(`http://localhost:8080/tickets?userID=${userID.id}&view=1`, {
                 method: "GET",
                 headers: {
@@ -35,6 +43,7 @@ const LoginView = () => {
                 let ticketQueue = await res.json()
                 context.setState({user: userID, tickets: {...context.tickets, queue: ticketQueue.tickets}})
             }
+
         }
     }
 

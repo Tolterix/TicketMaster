@@ -4,43 +4,31 @@ import { StateContext } from '../State';
 const TicketDetails = () => {
     const context = React.useContext(StateContext);
 
-    var ticket;
-    React.useEffect(async () => {
-        var response = await fetch(
-            `http://localhost:8080/tickets/${context.tickets.selected}`
-        );
-
-        ticket = await response.json();
-    });
-
+    let specificTicket = context.tickets.queue.filter(i => i.id == context.tickets.selected)[0]
+    
     return (
         <>
             {
-                !ticket
-                ? (
-                    <div className="text">
-                        <p>
-                            <b>Ticket #:</b>
-                            <br></br>
-                            <b>Status:</b>
-                            <br></br>
-                            <b>Title:</b>
-                            <br></br>
-                            <b>Description:</b>
-                            <br></br>
-                            <b>Category:</b>
-                            <br></br>
-                            <b>Submitted By:</b>
-                            <br></br>
-                            <b>Created At:</b>
-                        </p>
-                    </div>
-                )
-                : (
-                    <div className="text-center">
-
-                    </div>
-                )
+                !specificTicket
+                ? <div></div>
+                : <div className="text">
+                    <p>
+                        <b>Ticket #: {specificTicket.id}</b>
+                        <br/>
+                        <b>Status: {specificTicket.status}</b>
+                        <br/>
+                        <b>Title: {specificTicket.title}</b>
+                        <br/>
+                        <b>Description: {specificTicket.description}</b>
+                        <br/>
+                        <b>Category: {specificTicket.category_id}</b>
+                        <br/>
+                        <b>Submitted By: {specificTicket.submitted_by}</b>
+                        <br/>
+                        <b>Created At: {specificTicket.created_at}</b>
+                        <br/>
+                    </p>
+                </div>
             }
         </>
     );

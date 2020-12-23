@@ -25,6 +25,10 @@ const TicketTable = () => {
         });
     }
 
+    const changeTicket = (event) => {
+        context.setState({tickets: {...context.tickets, selected: event.target.value}})
+    }
+
     return (
         <div className="table-responsive">
             <table className="table table-bordered" width="100%" cellspacing="0">
@@ -48,9 +52,9 @@ const TicketTable = () => {
                                     onClick={ handleTicketSelect }>
                                     <td>
                                         {
-                                            i === 0
+                                            i === context.tickets.selected
                                             ? <input type="radio" name="selection" value={ ticket.id } checked />
-                                            : <input type="radio" name="selection" value={ ticket.id }/>
+                                            : <input type="radio" name="selection" onChange={changeTicket} value={ ticket.id }/>
                                         }
                                     </td>
                                     <td>{ ticket.id }</td>
